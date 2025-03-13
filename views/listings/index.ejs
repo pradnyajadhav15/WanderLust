@@ -1,0 +1,45 @@
+<% layout("/layouts/boilerplate") -%>
+
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center">
+    <h3>All Listings</h3>
+    <a href="/listings/new" class="btn btn-dark add-btn">Add New Listing</a>
+  </div>
+
+  <div class="row justify-content-center g-4 mt-3">
+    <% allListings.forEach((listing) => { %>
+      
+      <% console.log("Listing ID:", listing._id); %>
+      <% console.log("Listing Images:", listing.images); %> <!-- Debugging Log -->
+
+      <div class="col-lg-4 col-md-6 col-sm-12">
+        <a href="/listings/<%= listing._id %>" class="listing-link text-decoration-none">
+          <div class="card border-0 shadow-sm">
+
+            <!-- ✅ Display Listing Image or Placeholder -->
+            <% if (listing.images && Array.isArray(listing.images) && listing.images.length > 0) { %>
+              <% let imageUrl = listing.images[0].startsWith('http') ? listing.images[0] : `https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/${listing.images[0]}`; %>
+              <img src="<%= imageUrl %>" 
+                   alt="Listing Image" 
+                   onerror="this.onerror=null; this.src='/images/default.jpg';"
+                   style="height: 16rem; object-fit: cover; border-radius: 10px;">
+            <% } else { %>
+              <img src="https://via.placeholder.com/400x300?text=No+Image" 
+                   class="card-img-top" 
+                   alt="No Image"
+                   style="height: 16rem; object-fit: cover; border-radius: 10px;">
+            <% } %>
+
+            <div class="card-body text-center">
+              <h5 class="card-title"><%= listing.title %></h5>
+              <p class="card-text">
+                <b>₹<%= listing.price ? listing.price.toLocaleString("en-IN") : "N/A" %></b> / night <br>
+                <span class="text-muted"><%= listing.location %>, <%= listing.country %></span>
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+    <% }); %>
+  </div>
+</div>
