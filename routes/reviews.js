@@ -3,65 +3,29 @@ const router = express.Router({ mergeParams: true });
 const wrapAsync = require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/ExpressError.js");
 const { reviewSchema } = require("../schemas.js");
-const Listing = require("../models/listing.js");
-const Review = require("../models/review.js");
-const { isLoggedIn, isReviewAuthor } = require("../middleware"); 
+const { isLoggedIn, isReviewAuthor } = require("../middleware");
+const reviewController = require("../controllers/reviews.js");
 
-// Debugging logs
-console.log("✅ wrapAsync is loaded:", typeof wrapAsync === "function");
-console.log("✅ isReviewAuthor is loaded:", typeof isReviewAuthor === "function");
-
-// ✅ Middleware: Validate Review Data with Joi
+// ✅ Middleware to validate review data
 const validateReview = (req, res, next) => {
-  console.log("📩 Received review data:", req.body); // ✅ Debugging log
+  console.log("📩 Received review data:", req.body); // Debugging log
+
+  if (!req.body.review || !req.body.review.text || !req.body.review.rating) {
+    return next(new ExpressError(400, "Review must include text and rating"));
+  }
+
   const { error } = reviewSchema.validate(req.body.review);
   if (error) {
     const msg = error.details.map((el) => el.message).join(", ");
-    return next(new ExpressError(400, msg)); // ✅ Better error handling
+    return next(new ExpressError(400, msg));
   }
   next();
 };
 
-// ✅ Post Review
-router.post(
-  "/",
-  isLoggedIn,
-  validateReview,
-  wrapAsync(async (req, res, next) => {
-    let listing = await Listing.findById(req.params.id);
-    if (!listing) {
-      req.flash("error", "Listing not found!");
-      return res.redirect("/listings");
-    }
+// ✅ Create Review Route
+router.post("/", isLoggedIn, validateReview, wrapAsync(reviewController.createReview));
 
-    let newReview = new Review(req.body.review);
-    newReview.author = req.user._id;
-
-    listing.reviews.push(newReview);
-    await newReview.save();
-    await listing.save();
-    
-    req.flash("success", "New review added!");
-    console.log("✅ New review saved:", newReview); // ✅ Debugging log
-    res.redirect(`/listings/${listing._id}`);
-  })
-);
-
-// ✅ Delete Review
-router.delete(
-  "/:reviewId",
-  isLoggedIn,
-  isReviewAuthor, // ✅ Security check: Only author can delete
-  wrapAsync(async (req, res, next) => {
-    const { id, reviewId } = req.params;
-
-    await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-    await Review.findByIdAndDelete(reviewId);
-
-    req.flash("success", "Review deleted!");
-    console.log("🗑 Review deleted:", reviewId); // ✅ Debugging log
-    res.redirect(`/listings/${id}`);
-  })
-);
+// ✅ Delete Review Route
+router.delete("/:reviewId", isLoggedIn, isReviewAuthor, wrapAsync(reviewController.destroyReview));
 
 module.exports = router;

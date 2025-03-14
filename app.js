@@ -1,5 +1,5 @@
+require("dotenv").config(); // ✅ Load environment variables
 const express = require("express");
-const app = express();
 const mongoose = require("mongoose");
 const path = require("path");
 const methodOverride = require("method-override");
@@ -13,23 +13,26 @@ const helmet = require("helmet");
 const User = require("./models/user.js");
 const ExpressError = require("./utils/ExpressError.js");
 
+const app = express();
+
 // ✅ Import Routes
 const listingRoutes = require("./routes/listings.js");
 const reviewRoutes = require("./routes/reviews.js");
 const userRoutes = require("./routes/user.js");
 
 const MONGO_URL = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/wanderlust";
+const SESSION_SECRET = process.env.SESSION_SECRET || "mysupersecretstring";
 
-// 🌟 Database Connection
-async function main() {
+// 🌟 Database Connection (Ensuring Connection Before Server Starts)
+async function connectDB() {
   try {
     await mongoose.connect(MONGO_URL);
     console.log("✅ Connected to MongoDB");
   } catch (err) {
     console.error("❌ DB Connection Error:", err);
+    process.exit(1); // Stop server if DB fails
   }
 }
-main();
 
 // 🌟 Setup EJS
 app.engine("ejs", ejsMate);
@@ -41,30 +44,30 @@ app.use(methodOverride("_method"));
 
 // ✅ Serving Static Files
 app.use(express.static(path.join(__dirname, "public")));
-// ✅ Serve `/uploads` folder explicitly (if images are stored locally)
 app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
 
+// ✅ Helmet Security Configuration
 app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
-        "img-src": ["'self'", "data:", "*"], // ✅ Temporary Fix: Allows all images
-        "script-src": ["'self'", "https://cdn.jsdelivr.net/", "https://cdnjs.cloudflare.com/"],
+        "img-src": ["'self'", "data:", "*"],
+        "script-src": ["'self'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com"],
       },
     },
   })
 );
 
-// ✅ Session Store (MongoDB for persistence)
+// ✅ Session Store (MongoDB)
 const sessionStore = MongoStore.create({
   mongoUrl: MONGO_URL,
   touchAfter: 24 * 60 * 60,
-  crypto: { secret: process.env.SESSION_SECRET || "mysupersecretstring" },
+  crypto: { secret: SESSION_SECRET },
 });
 
 const sessionOptions = {
   store: sessionStore,
-  secret: process.env.SESSION_SECRET || "mysupersecretstring",
+  secret: SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: {
@@ -90,13 +93,13 @@ app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   res.locals.currUser = req.user || null;
-  console.log("👤 Current User:", res.locals.currUser);
+  console.log("👤 Current User:", res.locals.currUser ? req.user.username : "Not logged in");
   next();
 });
 
 // 🌟 Root Route
 app.get("/", (req, res) => {
-  res.render("home"); // ✅ Ensure `views/home.ejs` exists
+  res.render("home");
 });
 
 // ✅ Use Routes
@@ -122,8 +125,10 @@ process.on("SIGINT", async () => {
   process.exit(0);
 });
 
-// 🚀 Start Server
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`✅ Server is running on port ${PORT}`);
+// 🚀 Start Server After DB Connection
+connectDB().then(() => {
+  const PORT = process.env.PORT || 8080;
+  app.listen(PORT, () => {
+    console.log(`✅ Server is running on port ${PORT}`);
+  });
 });

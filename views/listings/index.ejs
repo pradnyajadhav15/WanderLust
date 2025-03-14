@@ -1,5 +1,11 @@
 <% layout("/layouts/boilerplate") -%>
 
+<!-- ✅ Use jsDelivr CDN instead of Cloudflare -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/all.min.css">
+
+<!-- ✅ Fix for missing favicon -->
+<link rel="icon" type="image/png" href="https://via.placeholder.com/32">
+
 <div class="container mt-4">
   <div class="d-flex justify-content-between align-items-center">
     <h3>All Listings</h3>
@@ -7,39 +13,49 @@
   </div>
 
   <div class="row justify-content-center g-4 mt-3">
-    <% allListings.forEach((listing) => { %>
-      
-      <% console.log("Listing ID:", listing._id); %>
-      <% console.log("Listing Images:", listing.images); %> <!-- Debugging Log -->
-
-      <div class="col-lg-4 col-md-6 col-sm-12">
-        <a href="/listings/<%= listing._id %>" class="listing-link text-decoration-none">
+    <% if (allListings && allListings.length > 0) { %>
+      <% allListings.forEach((listing) => { %>
+        <div class="col-lg-4 col-md-6 col-sm-12">
           <div class="card border-0 shadow-sm">
-
-            <!-- ✅ Display Listing Image or Placeholder -->
-            <% if (listing.images && Array.isArray(listing.images) && listing.images.length > 0) { %>
-              <% let imageUrl = listing.images[0].startsWith('http') ? listing.images[0] : `https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/${listing.images[0]}`; %>
-              <img src="<%= imageUrl %>" 
-                   alt="Listing Image" 
-                   onerror="this.onerror=null; this.src='/images/default.jpg';"
-                   style="height: 16rem; object-fit: cover; border-radius: 10px;">
+            
+            <% if (listing.image && Array.isArray(listing.image) && listing.image.length > 0 && listing.image[0]?.url) { 
+              var imageUrl = typeof listing.image[0] === 'string' ? listing.image[0] :
+                listing.image[0].url.startsWith('http') 
+                ? listing.image[0].url 
+                : `https://res.cloudinary.com/YOUR_ACTUAL_CLOUD_NAME/image/upload/${listing.image[0].url}`;
+            %>
+              <a href="/listings/<%= listing._id %>" class="listing-link text-decoration-none">
+                <img src="<%= imageUrl %>" 
+                     alt="Listing Image" 
+                     class="card-img-top"
+                     onerror="this.onerror=null; this.src='/images/default.jpg';"
+                     style="height: 16rem; object-fit: cover; border-radius: 10px;">
+              </a>
             <% } else { %>
-              <img src="https://via.placeholder.com/400x300?text=No+Image" 
-                   class="card-img-top" 
-                   alt="No Image"
-                   style="height: 16rem; object-fit: cover; border-radius: 10px;">
+              <a href="/listings/<%= listing._id %>" class="listing-link text-decoration-none">
+                <img src="https://via.placeholder.com/400x300?text=No+Image" 
+                     alt="No Image" 
+                     class="card-img-top"
+                     style="height: 16rem; object-fit: cover; border-radius: 10px;">
+              </a>
             <% } %>
 
             <div class="card-body text-center">
-              <h5 class="card-title"><%= listing.title %></h5>
+              <h5 class="card-title">
+                <a href="/listings/<%= listing._id %>" class="text-dark text-decoration-none">
+                  <%= listing.title %>
+                </a>
+              </h5>
               <p class="card-text">
-                <b>₹<%= listing.price ? listing.price.toLocaleString("en-IN") : "N/A" %></b> / night <br>
+                <b>₹<%= typeof listing.price === 'number' ? listing.price.toLocaleString("en-IN") : "N/A" %></b> / night <br>
                 <span class="text-muted"><%= listing.location %>, <%= listing.country %></span>
               </p>
             </div>
           </div>
-        </a>
-      </div>
-    <% }); %>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <p class="text-center text-muted">No listings available.</p>
+    <% } %>
   </div>
 </div>
