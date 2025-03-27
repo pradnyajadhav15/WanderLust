@@ -1,15 +1,19 @@
-require("dotenv").config(); // ✅ Load environment variables
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
-const MongoStore = require("connect-mongo");
 const helmet = require("helmet");
+const crypto = require("crypto");
 const User = require("./models/user.js");
 const ExpressError = require("./utils/ExpressError.js");
 
@@ -20,17 +24,18 @@ const listingRoutes = require("./routes/listings.js");
 const reviewRoutes = require("./routes/reviews.js");
 const userRoutes = require("./routes/user.js");
 
-const MONGO_URL = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/wanderlust";
+// ✅ Database URL
+const dbUrl = process.env.ATLASDB_URL || "mongodb://127.0.0.1:27017/wanderlust";
 const SESSION_SECRET = process.env.SESSION_SECRET || "mysupersecretstring";
 
-// 🌟 Database Connection (Ensuring Connection Before Server Starts)
+// 🌟 Database Connection
 async function connectDB() {
   try {
-    await mongoose.connect(MONGO_URL);
-    console.log("✅ Connected to MongoDB");
+    await mongoose.connect(dbUrl, { dbName: "WanderLust" });
+    console.log("🔍 MongoDB Connected:", dbUrl);
   } catch (err) {
     console.error("❌ DB Connection Error:", err);
-    process.exit(1); // Stop server if DB fails
+    process.exit(1);
   }
 }
 
@@ -46,30 +51,58 @@ app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
 
-// ✅ Helmet Security Configuration
+// ✅ Generate Nonce for Each Request
+app.use((req, res, next) => {
+  res.locals.nonce = crypto.randomBytes(16).toString("base64");
+  next();
+});
+
+// ✅ Helmet Security with Correct CSP
 app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
-        "img-src": ["'self'", "data:", "*"],
-        "script-src": ["'self'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com"],
+        defaultSrc: ["'self'"],
+        scriptSrc: [
+          "'self'",
+          "https://cdn.jsdelivr.net",
+          "https://cdnjs.cloudflare.com",
+          "https://api.mapbox.com",
+          (req, res) => `'nonce-${res.locals.nonce}'`, // ✅ Use Dynamic Nonce
+        ],
+        styleSrc: [
+          "'self'",
+          "https://cdn.jsdelivr.net",
+          "https://cdnjs.cloudflare.com",
+          "'unsafe-inline'", // ✅ Allow inline styles (needed for some libraries)
+        ],
+        imgSrc: ["'self'", "data:", "*"], // ✅ Allow images from all sources
+        connectSrc: ["'self'", "https://api.mapbox.com"], // ✅ Allow Mapbox API
       },
     },
   })
 );
 
 // ✅ Session Store (MongoDB)
-const sessionStore = MongoStore.create({
-  mongoUrl: MONGO_URL,
-  touchAfter: 24 * 60 * 60,
-  crypto: { secret: SESSION_SECRET },
+const store = MongoStore.create({
+  mongoUrl: dbUrl,
+  crypto: {
+    secret: SESSION_SECRET,
+  },
+  touchAfter: 24 * 3600, // Reduce write frequency
 });
 
+// ✅ Handle session store errors
+store.on("error", (err) => {
+  console.log("❌ Mongo Session Error:", err);
+});
+
+// ✅ Session Configuration
 const sessionOptions = {
-  store: sessionStore,
+  store: store, // ✅ Fixed: Using correct store variable
   secret: SESSION_SECRET,
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true,
   cookie: {
     expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
     maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -92,14 +125,9 @@ passport.deserializeUser(User.deserializeUser());
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
-  res.locals.currUser = req.user || null;
-  console.log("👤 Current User:", res.locals.currUser ? req.user.username : "Not logged in");
+  res.locals.currUser = req.user; // ✅ Ensure currUser is always set
+  console.log("👤 Current User:", req.user ? req.user.username : "Not logged in");
   next();
-});
-
-// 🌟 Root Route
-app.get("/", (req, res) => {
-  res.render("home");
 });
 
 // ✅ Use Routes

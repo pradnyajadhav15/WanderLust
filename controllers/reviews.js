@@ -1,62 +1,26 @@
-const Listing = require("../models/listing");
-const Review = require("../models/review");
+const Listing = require("../models/listing.js");  // Corrected the path to 'listing.js'
+const Review = require("../models/review.js");
 
-module.exports.createReview = async (req, res, next) => {
-  try {
-    const listing = await Listing.findById(req.params.id);
-    if (!listing) {
-      req.flash("error", "Listing not found!");
-      return res.redirect("/listings");
-    }
+module.exports.createReview = async (req, res) => {
+    let listings = await Listing.findById(req.params.id);
+    let newReview = new Review(req.body.review);
+    newReview.author = req.user._id;
 
-    if (!req.body.review || !req.body.review.text || !req.body.review.rating) {
-      req.flash("error", "Review must have text and rating!");
-      return res.redirect(`/listings/${listing._id}`);
-    }
-
-    const newReview = new Review({
-      text: req.body.review.text,
-      rating: req.body.review.rating,
-      author: req.user._id,
-      listing: listing._id
-    });
+    listings.reviews.push(newReview);
 
     await newReview.save();
-    listing.reviews.push(newReview);
-    await listing.save();
+    await listings.save();
 
-    req.flash("success", "New review added!");
-    console.log("✅ New review saved:", newReview);
-    res.redirect(`/listings/${listing._id}`);
-  } catch (err) {
-    console.error("❌ Error creating review:", err);
-    req.flash("error", "Something went wrong.");
-    res.redirect("/listings");
-  }
+    console.log("new review saved");
+    req.flash("success", "Review Added!");
+    res.redirect(`/listings/${listings._id}`);
 };
 
-module.exports.destroyReview = async (req, res, next) => {
-  try {
-    const { id, reviewId } = req.params;
+module.exports.reviewDelete = async (req, res) => {
+    let { id, reviewId } = req.params;
 
-    const listing = await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-    if (!listing) {
-      req.flash("error", "Listing not found!");
-      return res.redirect("/listings");
-    }
-
-    const deletedReview = await Review.findByIdAndDelete(reviewId);
-    if (!deletedReview) {
-      req.flash("error", "Review not found!");
-      return res.redirect(`/listings/${id}`);
-    }
-
-    req.flash("success", "Review deleted!");
-    console.log("🗑 Review deleted:", reviewId);
+    await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+    await Review.findByIdAndDelete(reviewId);
+    req.flash("success", "Review Deleted!");
     res.redirect(`/listings/${id}`);
-  } catch (err) {
-    console.error("❌ Error deleting review:", err);
-    req.flash("error", "Something went wrong.");
-    res.redirect("/listings");
-  }
 };

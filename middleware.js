@@ -2,7 +2,7 @@ const Review = require("./models/review");
 
 module.exports.isLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
-    req.session.redirectUrl = req.originalUrl; // ✅ Save the requested URL before redirecting
+    req.session.redirectUrl = req.originalUrl; // ✅ Save requested URL before redirecting
     req.flash("error", "You must be logged in to continue!");
     return res.redirect("/login");
   }
@@ -18,7 +18,7 @@ module.exports.isReviewAuthor = async (req, res, next) => {
     return res.redirect(`/listings/${id}`);
   }
 
-  if (!req.user || review.author.toString() !== req.user._id.toString()) {
+  if (!req.user || review?.author?.toString() !== req.user?._id?.toString()) {
     req.flash("error", "You do not have permission to delete this review!");
     return res.redirect(`/listings/${id}`);
   }
@@ -27,11 +27,7 @@ module.exports.isReviewAuthor = async (req, res, next) => {
 };
 
 module.exports.saveRedirectUrl = (req, res, next) => {
-  if (req.session.redirectUrl) {
-    res.locals.redirectUrl = req.session.redirectUrl;
-    delete req.session.redirectUrl; // ✅ Clear redirect URL only if it exists
-  } else {
-    res.locals.redirectUrl = "/";
-  }
+  res.locals.redirectUrl = req.session.redirectUrl || "/";
+  delete req.session.redirectUrl; // ✅ Clear redirect URL after setting it
   next();
 };

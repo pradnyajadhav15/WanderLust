@@ -1,25 +1,103 @@
+<style>
+  /* Navbar Styling */
+  .navbar-custom {
+      background: #f8f9fa; /* Soft Off-White */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+  }
 
-<nav class="navbar navbar-expand-md bg-light border-bottom sticky-top">
+  .navbar-brand {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #333 !important;
+  }
+
+  .nav-link {
+      color: #555 !important;
+      font-weight: 500;
+      transition: 0.3s;
+  }
+
+  .nav-link:hover {
+      color: #007bff !important; /* Soft Blue Hover */
+  }
+
+  /* Search Bar */
+  .search-container {
+      display: flex;
+      align-items: center;
+      background: white;
+      border-radius: 25px;
+      overflow: hidden;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .search-input {
+      border: none;
+      padding: 10px 15px;
+      font-size: 1rem;
+      flex: 1;
+      outline: none;
+      background: #f3f3f3;
+  }
+
+  .search-btn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      transition: 0.3s;
+  }
+
+  .search-btn:hover {
+      background-color: #0056b3;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+      .search-container {
+          width: 100%;
+      }
+  }
+</style>
+
+
+<nav class="navbar navbar-expand-md navbar-custom sticky-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/"><i class="fa fa-compass"></i> Wanderlust</a>
+    <a class="navbar-brand" href="/listings">
+      <i class="fa fa-compass"></i> WanderLust
+    </a>
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
       <span class="navbar-toggler-icon"></span>
     </button>
-    
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+
+    <div class="collapse navbar-collapse justify-content-between" id="navbarNavAltMarkup">
+      <!-- Left Navigation -->
       <div class="navbar-nav">
-        <a class="nav-link" href="/">Home</a>
-        <a class="nav-link" href="/listings">All Listings</a>
-        <a class="nav-link" href="/listings/new">Add New Listings</a>
+        <a class="nav-link" href="/listings"><b>Explore</b></a>
       </div>
 
+      <!-- Search Bar -->
+      <form action="/listings/search" method="get" class="search-container mx-auto">
+        <input class="search-input" type="search" placeholder="Search Destination" name="query">
+        <button class="search-btn">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </form>
+
+      <!-- Right Navigation -->
       <div class="navbar-nav ms-auto">
-        <% if (typeof currUser === "undefined" || !currUser) { %>
-          <a class="nav-link" href="/signup">Sign Up</a>
-          <a class="nav-link" href="/login">Log in</a>
+        <a class="nav-link" href="/listings/new"><b>WanderLust your home</b></a>
+
+          <% if (!currUser) { %>
+
+          <a class="nav-link" href="/signup"><b>Sign up</b></a>
+          <a class="nav-link" href="/login"><b>Log in</b></a>
         <% } else { %>
-          <span class="navbar-text me-2">Welcome, <%= currUser.username %>!</span>
-          <a class="nav-link" href="/logout">Log out</a>
+          <a class="nav-link" href="/logout"><b>Log out</b></a>
         <% } %>
       </div>
     </div>

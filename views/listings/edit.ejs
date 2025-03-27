@@ -1,50 +1,105 @@
-<% layout("/layouts/boilerplate") -%>
+<% layout("./layouts/boilerplate") %>
+
+<style>
+    /* Styling for Better Responsiveness */
+    .edit-form-container {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 10px;
+     
+    }
+    
+    /* Image Preview Styling */
+    .listing-img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+    
+    /* Smaller Original Image Left Aligned */
+    .original-listing-img {
+        max-width: 150px;
+        height: auto;
+        border-radius: 5px;
+        margin-top: 10px;
+        display: block;
+    }
+
+    .form-label {
+        font-weight: bold;
+    }
+
+    .btn-dark {
+        width: 100%;
+    }
+</style>
 
 <div class="container mt-4">
-  <div class="row justify-content-center">
-    <div class="col-lg-8">
-      <h3 class="mb-4">Edit Your Listing</h3>
+  <div class="edit-form-container">
+    <h3 class="mb-4">Edit Your Listing</h3>
 
-      <form method="POST" action="/listings/<%= listing._id %>?_method=PUT">
-        <!-- Title -->
-        <div class="mb-3">
-          <label for="title" class="form-label">Title</label>
-          <input name="listing[title]" value="<%= listing.title %>" type="text" class="form-control" required />
-        </div> 
+    <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation" enctype="multipart/form-data">
+      <!-- Title -->
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input id="title" name="listing[title]" value="<%= listing.title %>" type="text" class="form-control" required />
+      </div> 
+    
+      <div class="d-flex align-items-start">
+        <!-- Original Image -->
+        <div class="me-3">
+          <label class="form-label">Original Listing Image</label>
+          <img src="<%= listing.image.url %>" class="original-listing-img" alt="Listing Image">
+        </div>
         
-        <!-- Description -->
-        <div class="mb-3">
-          <label for="description" class="form-label">Description</label>
-          <textarea name="listing[description]" class="form-control" rows="3" required><%= listing.description %></textarea>
-        </div>
-
-        <!-- Image URL -->
-        <div class="mb-3">
-          <label for="image" class="form-label">Image URL</label>
-          <input name="listing[image]" value="<%= listing.image ? listing.image.url : '' %>" type="text" class="form-control" required />
-        </div>
-
-        <!-- Price & Country -->
-        <div class="row">
-          <div class="mb-3 col-md-4">
-            <label for="price" class="form-label">Price (₹ per night)</label>
-            <input name="listing[price]" value="<%= listing.price %>" type="number" class="form-control" required />
+        <div class="w-100">
+          <!-- New Image Upload -->
+          <div class="mb-3">
+            <label for="image" class="form-label">Upload New Image</label>
+            <input id="image" type="file" name="listing[image]" class="form-control" onchange="previewImage(event)">
+            <img id="image-preview" class="listing-img d-none" alt="Image Preview">
           </div>
-          
-          <div class="mb-3 col-md-8">
-            <label for="country" class="form-label">Country</label>
-            <input name="listing[country]" value="<%= listing.country %>" type="text" class="form-control" required />
+
+          <!-- Price & Country -->
+          <div class="row">
+            <div class="mb-3 col-md-6">
+              <label for="price" class="form-label">Price (₹ per night)</label>
+              <input id="price" name="listing[price]" value="<%= listing.price %>" type="number" class="form-control" required />
+            </div>
+            
+            <div class="mb-3 col-md-6">
+              <label for="country" class="form-label">Country</label>
+              <input id="country" name="listing[country]" value="<%= listing.country %>" type="text" class="form-control" required />
+            </div>
+          </div>
+
+          <!-- Location -->
+          <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <input id="location" name="listing[location]" value="<%= listing.location %>" type="text" class="form-control" required />
           </div>
         </div>
+      </div>
 
-        <!-- Location -->
-        <div class="mb-3">
-          <label for="location" class="form-label">Location</label>
-          <input name="listing[location]" value="<%= listing.location %>" type="text" class="form-control" required />
-        </div>
-
-        <button class="btn btn-dark edit-btn mt-2">Update Listing</button>
-      </form>
-    </div>  
-  </div>
+      <button class="btn btn-dark mt-3">Update Listing</button>
+    </form>
+  </div>  
 </div>
+
+<script>
+  function previewImage(event) {
+    const imagePreview = document.getElementById('image-preview');
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        imagePreview.src = e.target.result;
+        imagePreview.classList.remove('d-none');
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+</script>

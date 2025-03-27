@@ -1,61 +1,165 @@
 <% layout("/layouts/boilerplate") -%>
+<body>
+ <style>
+  /* Filters container */
+#filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;  /* Centering content */
+    align-items: center;
+    gap: 1.2rem;
+    padding: 1.2rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+    max-width: 90%;
+    margin: 0 auto; /* Center horizontally */
+}
 
-<!-- ✅ Use jsDelivr CDN instead of Cloudflare -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/all.min.css">
+/* Individual filter styles */
+.filter {
+    text-align: center;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+}
 
-<!-- ✅ Fix for missing favicon -->
-<link rel="icon" type="image/png" href="https://via.placeholder.com/32">
+.filter:hover {
+    opacity: 1;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.1);
+}
 
-<div class="container mt-4">
-  <div class="d-flex justify-content-between align-items-center">
-    <h3>All Listings</h3>
-    <a href="/listings/new" class="btn btn-dark add-btn">Add New Listing</a>
-  </div>
+.filter a {
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-  <div class="row justify-content-center g-4 mt-3">
-    <% if (allListings && allListings.length > 0) { %>
-      <% allListings.forEach((listing) => { %>
-        <div class="col-lg-4 col-md-6 col-sm-12">
-          <div class="card border-0 shadow-sm">
-            
-            <% if (listing.image && Array.isArray(listing.image) && listing.image.length > 0 && listing.image[0]?.url) { 
-              var imageUrl = typeof listing.image[0] === 'string' ? listing.image[0] :
-                listing.image[0].url.startsWith('http') 
-                ? listing.image[0].url 
-                : `https://res.cloudinary.com/YOUR_ACTUAL_CLOUD_NAME/image/upload/${listing.image[0].url}`;
-            %>
-              <a href="/listings/<%= listing._id %>" class="listing-link text-decoration-none">
-                <img src="<%= imageUrl %>" 
-                     alt="Listing Image" 
-                     class="card-img-top"
-                     onerror="this.onerror=null; this.src='/images/default.jpg';"
-                     style="height: 16rem; object-fit: cover; border-radius: 10px;">
-              </a>
-            <% } else { %>
-              <a href="/listings/<%= listing._id %>" class="listing-link text-decoration-none">
-                <img src="https://via.placeholder.com/400x300?text=No+Image" 
-                     alt="No Image" 
-                     class="card-img-top"
-                     style="height: 16rem; object-fit: cover; border-radius: 10px;">
-              </a>
-            <% } %>
+.filter p {
+    margin-top: 5px;
+}
 
-            <div class="card-body text-center">
-              <h5 class="card-title">
-                <a href="/listings/<%= listing._id %>" class="text-dark text-decoration-none">
-                  <%= listing.title %>
-                </a>
-              </h5>
-              <p class="card-text">
-                <b>₹<%= typeof listing.price === 'number' ? listing.price.toLocaleString("en-IN") : "N/A" %></b> / night <br>
-                <span class="text-muted"><%= listing.location %>, <%= listing.country %></span>
-              </p>
-            </div>
-          </div>
-        </div>
-      <% }); %>
-    <% } else { %>
-      <p class="text-center text-muted">No listings available.</p>
+/* Tax toggle button */
+.tex-switch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    border: 1px solid black;
+    cursor: pointer;
+    width: fit-content;
+    margin: 1rem auto; /* Center the toggle switch */
+}
+
+/* Listing card styles */
+.listing-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.listing-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.card-img-top {
+    height: 250px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 1rem;
+    background: #fff;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    #filters {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .filter {
+        flex: 1 1 40%;
+    }
+    .tex-switch {
+        width: 100%;
+        justify-content: center;
+    }
+}
+ </style>
+
+  <div id="filters">
+    <% const categories = [
+      { name: "Trending", icon: "fa-fire" },
+      { name: "Rooms", icon: "fa-bed" },
+      { name: "Iconic Cities", icon: "fa-mountain-city" },
+      { name: "Mountains", icon: "fa-mountain" },
+      { name: "Castles", icon: "fa-fort-awesome" },
+      { name: "Amazing Pools", icon: "fa-person-swimming" },
+      { name: "Camping", icon: "fa-campground" },
+      { name: "Farms", icon: "fa-cow" },
+      { name: "Arctic", icon: "fa-snowflake" },
+      { name: "Domes", icon: "fa-igloo" }
+    ]; %>
+    
+    <% for (let category of categories) { %>
+      <div class="filter">
+        <a href="/listings/category/<%= category.name %>">
+          <i class="fa-solid <%= category.icon %> fa-lg"></i>
+          <p><%= category.name %></p>
+        </a>
+      </div>
     <% } %>
   </div>
-</div>
+
+  <div class="tex-switch">
+    <div class="form-check-reverse form-switch">
+      <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+      <label class="form-check-label" for="flexSwitchCheckDefault">Display total after taxes</label>
+    </div>
+  </div>
+
+    <div class="row justify-content-center g-4 mt-3">
+      <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+        <% for(let list of allListings){ %>
+          <div class="col">
+            <a href="/listings/<%= list._id %>" class="listing-link">
+              <div class="card listing-card">
+                <img src="<%= list.image.url %>" class="card-img-top" alt="listings" 
+                     style="height: 16rem; object-fit: cover; border-radius: 10px;">
+                <div class="card-body">
+                  <p class="card-text">
+                    <b><%= list.title %></b><br>
+                    &#8377; <%= list.price.toLocaleString("en-IN") %>/night
+                    <i class="tax-info"> &nbsp; &nbsp;+18% GST</i>
+                  </p>
+                  <span class="text-muted"><%= list.location %>, <%= list.country %></span>
+                </div>
+              </div>
+            </a>
+          </div>
+        <% } %>
+      </div>
+    </div>
+    
+
+<script>
+  let taxSwitch = document.getElementById("flexSwitchCheckDefault");
+  taxSwitch.addEventListener("click", () => {
+    let taxInfo = document.getElementsByClassName("tax-info");
+    for (let info of taxInfo) {
+      info.style.display = info.style.display !== "inline" ? "inline" : "none";
+    }
+  });
+</script>
+
+</body>

@@ -1,21 +1,22 @@
 const mongoose = require("mongoose");
 const passportLocalMongoose = require("passport-local-mongoose");
 
-const userSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
+    username: {
+        type: String,
+        required: true,
+        unique: true
+    },
     email: {
         type: String,
         required: true,
-        unique: true, // ✅ Prevent duplicate emails
-        match: [/.+@.+\..+/, "Please enter a valid email"], // ✅ Validate email format
-    },
-    role: {
-        type: String,
-        enum: ["user", "admin"],
-        default: "user", // ✅ Optional for role-based access control
+        unique: true
     }
 });
 
-// ✅ Add passport-local-mongoose plugin
-userSchema.plugin(passportLocalMongoose);
+// Add authentication methods to User model
+UserSchema.plugin(passportLocalMongoose);
 
-module.exports = mongoose.model("User", userSchema);
+const User = mongoose.model("User", UserSchema);
+
+module.exports = User;

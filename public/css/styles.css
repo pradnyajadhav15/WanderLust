@@ -1,4 +1,3 @@
-/* General */
 body {
     font-family: 'DM Sans', sans-serif !important;
     display: flex;
@@ -85,8 +84,8 @@ footer {
 
 .card-img-top {
     border-radius: 1rem;
-    width: 100%;
-    height: 14rem;
+    width: 80%;
+    height: 12rem;
     object-fit: cover !important;
 }
 
@@ -148,4 +147,10 @@ footer {
     .show-img {
         max-height: 250px !important;
     }
+}
+
+/* map */
+#map{
+    height: 400px !important;
+    width: 80vh !important;
 }

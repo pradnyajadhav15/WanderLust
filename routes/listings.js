@@ -6,6 +6,14 @@ const { listingSchema } = require("../schemas");
 const ExpressError = require("../utils/ExpressError");
 const listingController = require("../controllers/listings");
 
+const multer  = require('multer')
+const {storage} = require("../cloudConfig.js")
+const upload = multer({storage })
+
+
+
+
+
 // Middleware to validate listings
 const validateListing = (req, res, next) => {
   const { error } = listingSchema.validate(req.body);
@@ -16,11 +24,19 @@ const validateListing = (req, res, next) => {
   next();
 };
 
+router.route("/")
+.get( wrapAsync(listingController.index))
+.post( isLoggedIn,
+    upload.single("listing[image]"),
+    validateListing,
+   wrapAsync( listingController.createListing));
+
+
 // 📌 Get all listings
 router.get("/", wrapAsync(listingController.index));
 
 // 📌 Show form to create a new listing
-router.get("/new", isLoggedIn, listingController.renderNewForm);
+router.get("/new", isLoggedIn, upload.single("listing[image]"), listingController.renderNewForm);
 
 // 📌 Create a new listing
 router.post("/", isLoggedIn, validateListing, wrapAsync(listingController.createListing));
