@@ -1,4 +1,4 @@
-const Listing = require("../models/listing.js");  // Corrected the path to 'listing.js'
+const Listing = require("../models/listing.js");  // Corrected the path to 'listting.js'
 const Review = require("../models/review.js");
 
 module.exports.createReview = async (req, res) => {

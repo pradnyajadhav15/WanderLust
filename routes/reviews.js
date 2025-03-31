@@ -1,39 +1,54 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router({ mergeParams: true });
-const wrapAsync = require("../utils/wrapAsync.js");
-const ExpressError = require("../utils/ExpressError.js");
-const { reviewSchema } = require("../schemas.js");
-const { isLoggedIn, isReviewAuthor } = require("../middleware");
-const reviewController = require("../controllers/reviews.js");
-const validateReview = (req, res, next) => {
-  console.log("📩 Received review data:", req.body);
+const Listing = require('../models/listing');  // Ensure the correct filename
+const Review = require('../models/review');
+const { isLoggedIn, validateReview, isReviewAuthor } = require('../middleware');
 
-  // Adjust if data is not wrapped inside "review"
-  if (!req.body.review) {
-    req.body.review = { ...req.body };
-  }
+// Debugging: Ensure middleware functions are imported correctly
+console.log({ isLoggedIn, validateReview, isReviewAuthor });
 
-  if (!req.body.review.comment || !req.body.review.rating) {
-    console.log("🚨 Missing comment or rating:", req.body.review);
-    console.log(reviewSchema.validate(req.body.review));
-    return next(new ExpressError(400, "Review must include comment and rating"));
-  }
+// POST route to create a review
+router.post('/', isLoggedIn, validateReview, async (req, res, next) => {
+    try {
+        const listing = await Listing.findById(req.params.id);
+        if (!listing) {
+            req.flash('error', 'Listing not found!');
+            return res.redirect('/listings');
+        }
 
-  const { error } = reviewSchema.validate(req.body.review);
-  if (error) {
-    const msg = error.details.map((el) => el.message).join(", ");
-    console.log("❌ Validation Error:", msg);
-    return next(new ExpressError(400, msg));
-  }
+        const review = new Review(req.body.review);
+        review.author = req.user._id;
+        await review.save();
+        listing.reviews.push(review);
+        await listing.save();
 
-  next();
-};
+        req.flash('success', 'Created new review!');
+        res.redirect(`/listings/${listing._id}`);
+    } catch (error) {
+        next(error);
+    }
+});
 
+// DELETE route to delete a review
+router.delete('/:reviewId', isLoggedIn, isReviewAuthor, async (req, res, next) => {
+    try {
+        const { id, reviewId } = req.params;
 
-// ✅ Create Review Route
-router.post("/", isLoggedIn, validateReview, wrapAsync(reviewController.createReview));
+        // Ensure the listing exists
+        const listing = await Listing.findById(id);
+        if (!listing) {
+            req.flash('error', 'Listing not found!');
+            return res.redirect('/listings');
+        }
 
-// ✅ Delete Review Route
-router.delete("/:reviewId", isLoggedIn, isReviewAuthor, wrapAsync(reviewController.destroyReview));
+        await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+        await Review.findByIdAndDelete(reviewId);
 
-module.exports = router;
+        req.flash('success', 'Review deleted');
+        res.redirect(`/listings/${id}`);
+    } catch (error) {
+        next(error);
+    }
+});
+
+module.exports = router;

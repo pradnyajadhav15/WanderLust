@@ -29,9 +29,10 @@ const dbUrl = process.env.ATLASDB_URL || "mongodb://127.0.0.1:27017/wanderlust";
 const SESSION_SECRET = process.env.SESSION_SECRET || "mysupersecretstring";
 
 // 🌟 Database Connection
+
 async function connectDB() {
   try {
-    await mongoose.connect(dbUrl, { dbName: "WanderLust" });
+    await mongoose.connect(dbUrl);
     console.log("🔍 MongoDB Connected:", dbUrl);
   } catch (err) {
     console.error("❌ DB Connection Error:", err);
@@ -57,6 +58,7 @@ app.use((req, res, next) => {
   next();
 });
 
+
 // ✅ Helmet Security with Correct CSP
 app.use(
   helmet({
@@ -67,25 +69,33 @@ app.use(
           "'self'",
           "https://cdn.jsdelivr.net",
           "https://cdnjs.cloudflare.com",
-          "https://api.mapbox.com",
-          (req, res) => `'nonce-${res.locals.nonce}'`, // ✅ Use Dynamic Nonce
+          "https://api.mapbox.com",  // Allow script requests to Mapbox
+          (req, res) => `'nonce-${res.locals.nonce}'`,
         ],
         styleSrc: [
           "'self'",
           "https://cdn.jsdelivr.net",
           "https://cdnjs.cloudflare.com",
-          "'unsafe-inline'", // ✅ Allow inline styles (needed for some libraries)
+          "https://fonts.googleapis.com",
+          "https://api.mapbox.com",  // Add this line to allow Mapbox styles
+          "'unsafe-inline'",  // Retain this if needed for inline styles
         ],
-        imgSrc: ["'self'", "data:", "*"], // ✅ Allow images from all sources
-        connectSrc: ["'self'", "https://api.mapbox.com"], // ✅ Allow Mapbox API
+        imgSrc: ["'self'", "data:", "*"],
+        connectSrc: [
+          "'self'",
+          "https://api.mapbox.com",
+          "https://events.mapbox.com",
+        ],
+        workerSrc: ["'self'", "blob:"],
       },
     },
   })
 );
 
-// ✅ Session Store (MongoDB)
+
+// ✅ Session Store (MongoDB) (Fix: Using dbUrl correctly)
 const store = MongoStore.create({
-  mongoUrl: dbUrl,
+  mongoUrl: dbUrl, // ✅ Fixed: dbUrl is now properly defined
   crypto: {
     secret: SESSION_SECRET,
   },

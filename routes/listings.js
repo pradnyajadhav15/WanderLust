@@ -1,18 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync");
-const { isLoggedIn } = require("../middleware");
+const { isLoggedIn, isOwner } = require("../middleware");
 const { listingSchema } = require("../schemas");
 const ExpressError = require("../utils/ExpressError");
 const listingController = require("../controllers/listings");
-
-const multer  = require('multer')
-const {storage} = require("../cloudConfig.js")
-const upload = multer({storage })
-
-
-
-
+const multer = require("multer");
+const { storage } = require("../cloudConfig.js");
+const upload = multer({ storage });
 
 // Middleware to validate listings
 const validateListing = (req, res, next) => {
@@ -25,32 +20,64 @@ const validateListing = (req, res, next) => {
 };
 
 router.route("/")
-.get( wrapAsync(listingController.index))
-.post( isLoggedIn,
+  .get(wrapAsync(listingController.index))
+  .post(
+    isLoggedIn,
     upload.single("listing[image]"),
     validateListing,
-   wrapAsync( listingController.createListing));
+    wrapAsync(listingController.createListing)
+  );
 
 
-// 📌 Get all listings
-router.get("/", wrapAsync(listingController.index));
+  
+    // new route
+router.get("/new", isLoggedIn, listingController.renderNewForm)
 
-// 📌 Show form to create a new listing
-router.get("/new", isLoggedIn, upload.single("listing[image]"), listingController.renderNewForm);
 
-// 📌 Create a new listing
-router.post("/", isLoggedIn, validateListing, wrapAsync(listingController.createListing));
+router.get("/category/:category", async (req, res) => {
+    const category = req.params.category;
+    const listings = await Listing.find({ category: category });
+    
+    res.render("./listings/category", { listings, category });
+});
 
-// 📌 Show a specific listing
-router.get("/:id", wrapAsync(listingController.showListing));
 
-// 📌 Show edit form
-router.get("/:id/edit", isLoggedIn, wrapAsync(listingController.renderEditForm));
 
-// 📌 Update a listing
-router.put("/:id", isLoggedIn, validateListing, wrapAsync(listingController.updateListing));
+router.get("/search",wrapAsync( async (req, res) => {
+    const query = req.query.query; // Get the query from the search form
 
-// 📌 Delete a listing
-router.delete("/:id", isLoggedIn, wrapAsync(listingController.deleteListing));
+    if (!query) {
+        return res.redirect("/listings"); // If no query, redirect to the homepage
+    }
 
+    try {
+        // Search for listings that match the query (case-insensitive search)
+        const results = await Listing.find({
+            title: { $regex: query, $options: "i" } // Regex search, case insensitive
+        });
+
+        // Render search.ejs with the results and the search query
+        res.render("./listings/search.ejs", {
+            results: results, 
+            query: query
+        });
+    } catch (err) {
+        console.error("Search error:", err);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+}));
+
+
+
+router.route("/:id")
+.get( wrapAsync(listingController.showListing))
+.put(   upload.single("listing[image]"),validateListing,isLoggedIn,isOwner,
+    wrapAsync( listingController.renderUpdateForm))
+    .delete(isLoggedIn,isOwner, wrapAsync(listingController.renderDelete));
+
+
+
+
+    //Edit ROute
+    router.get("/:id/edit",isLoggedIn,isOwner, wrapAsync(listingController.editListing));
 module.exports = router;
