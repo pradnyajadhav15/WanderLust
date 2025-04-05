@@ -4,44 +4,73 @@
     /* Styling for Better Responsiveness */
     .edit-form-container {
         max-width: 800px;
-        margin: auto;
-        padding: 20px;
-        background: #f8f9fa;
-        border-radius: 10px;
-     
+        margin: 2rem auto;
+        padding: 2rem;
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     }
-    
-    /* Image Preview Styling */
-    .listing-img {
-        max-width: 100%;
-        height: auto;
-        border-radius: 5px;
-        margin-top: 10px;
-    }
-    
-    /* Smaller Original Image Left Aligned */
-    .original-listing-img {
-        max-width: 150px;
-        height: auto;
-        border-radius: 5px;
-        margin-top: 10px;
-        display: block;
+
+    h2 {
+        font-weight: 600;
+        color: #343a40;
     }
 
     .form-label {
-        font-weight: bold;
+        font-weight: 500;
+        color: #495057;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        border: 1px solid #ced4da;
+        transition: all 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: #4b8ef1;
+        box-shadow: 0 0 0 0.2rem rgba(75, 142, 241, 0.25);
     }
 
     .btn-dark {
         width: 100%;
+        padding: 0.75rem;
+        border-radius: 10px;
+        font-weight: 500;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-dark:hover {
+        background-color: #000000;
+    }
+
+    .listing-img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 12px;
+        margin-top: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .original-listing-img {
+        max-width: 150px;
+        height: auto;
+        border-radius: 8px;
+        margin-top: 10px;
+        display: block;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .invalid-feedback {
+        font-size: 0.9rem;
+        color: #e74c3c;
     }
 </style>
-
 
 <body>
   <div class="container mt-3">
       <div class="edit-form-container shadow">
-          <h2 class="text-center mb-4">Edit Your Listing</h2>
+          <h2 class="text-center mb-4">Edit Your Listing here!</h2>
           
           <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation" enctype="multipart/form-data">
               <div class="mb-3">

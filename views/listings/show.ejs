@@ -13,6 +13,62 @@
 <% layout("/layouts/boilerplate") -%>
 <body>
 
+    <style>
+        body {
+          background-color: #f9f9f9;
+          font-family: 'Helvetica Neue', sans-serif;
+        }
+      
+        .show-card {
+          border: none;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+          border-radius: 16px;
+          overflow: hidden;
+          transition: transform 0.2s ease-in-out;
+        }
+      
+        .show-card:hover {
+          transform: scale(1.01);
+        }
+      
+        .show-img {
+          border-top-left-radius: 16px;
+          border-top-right-radius: 16px;
+          max-height: 400px;
+          object-fit: cover;
+        }
+      
+        .card-body {
+          padding: 1.5rem;
+        }
+      
+        .btn {
+          border-radius: 10px;
+          padding: 0.6rem 1.2rem;
+        }
+      
+        .btn-danger {
+          background-color: #ff385c;
+          border: none;
+        }
+      
+        .btn-danger:hover {
+          background-color: #e03150;
+        }
+      
+        .btn-outline-dark {
+          border-color: #000;
+          color: #000;
+        }
+      
+        .btn-outline-dark:hover {
+          background-color: #000;
+          color: #fff;
+        }
+      
+      </style>
+      
+
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
 
 <script nonce="<%= nonce %>">
@@ -79,6 +135,8 @@
       </div>
   <% } %>
 
+
+
   <% if (listing.reviews.length) { %>
       <div class="mt-4">
           <h4 class="text-center">All Reviews</h4>
@@ -106,8 +164,17 @@
   </div>
 </div>
 
-<!-- ✅ Ensure External Script Uses Nonce -->
+<!-- Ensure External Script Uses Nonce -->
 <script src="/js/map.js" nonce="<%= nonce %>"></script>
+
+<script>
+    // Convert data-rating to inline CSS for starability-result
+    document.querySelectorAll('.starability-result').forEach((el) => {
+      const rating = el.getAttribute('data-rating');
+      el.style.setProperty('--rating', rating);
+    });
+  </script>
+  
 
 </body>
 </html>

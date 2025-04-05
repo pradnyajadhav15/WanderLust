@@ -81,3 +81,21 @@ router.route("/:id")
     //Edit ROute
     router.get("/:id/edit",isLoggedIn,isOwner, wrapAsync(listingController.editListing));
 module.exports = router;
+
+
+router.post('/:id/save', isLoggedIn, async (req, res) => {
+    const listingId = req.params.id;
+    const user = await User.findById(req.user._id);
+
+    const index = user.savedListings.indexOf(listingId);
+    if (index === -1) {
+        // Save listing
+        user.savedListings.push(listingId);
+    } else {
+        // Unsave listing
+        user.savedListings.splice(index, 1);
+    }
+
+    await user.save();
+    res.redirect('back');
+});
