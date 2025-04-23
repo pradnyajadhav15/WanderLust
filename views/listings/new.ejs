@@ -1,123 +1,95 @@
-<% layout("./layouts/boilerplate") %>
+<% layout("/layouts/boilerplate.ejs") %>
+<body class="create-new-listing-body container-fluid p-0">
+  <div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8 gsap-form">
+      <h1 class="mb-3 new-listings-heading">Create New Listing</h1>
+      <form
+        action="/listings"
+        method="post"
+        novalidate
+        class="needs-validation"
+        enctype="multipart/form-data"
+      >
+        <!-- Title -->
+        <div class="mb-3 title">
+          <label for="title" class="form-label">Title</label>
+          <input
+            type="text"
+            placeholder="Enter Title"
+            name="listing[title]"
+            class="form-control"
+            required
+          />
+          <div class="invalid-feedback">Title is required!</div>
+        </div>
 
-<style>
-  .form-label {
-    font-weight: 600;
-    margin-bottom: 0.3rem;
-    color: #343a40;
-  }
+        <!-- Description -->
+        <div class="mb-3 description">
+          <label for="description" class="form-label">Description</label>
+          <textarea
+            placeholder="Enter a detailed description of your listing"
+            name="listing[description]"
+            class="form-control"
+            required
+          ></textarea>
+          <div class="invalid-feedback">Description is required!</div>
+        </div>
 
-  h2 {
-    font-weight: 700;
-    color: #212529;
-  }
+        <!-- Image Upload -->
+        <div class="mb-3 image">
+          <label for="image" class="form-label">Upload Image</label>
+          <input
+            type="file"
+            placeholder="Select an image file"
+            name="listing[image]"
+            class="form-control"
+            required
+          />
+          <div class="invalid-feedback">Image is required!</div>
+        </div>
 
-  .form-control {
-    border-radius: 12px;
-    border: 1px solid #dee2e6;
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
-    background-color: #f8f9fa;
-    transition: border-color 0.3s;
-  }
-
-  .form-control:focus {
-    border-color: #000;
-    box-shadow: 0 0 0 0.2rem rgba(33, 37, 41, 0.1);
-    background-color: #fff;
-  }
-
-  textarea.form-control {
-    resize: none;
-  }
-
-  .btn-dark {
-    width: 100%;
-    padding: 0.75rem;
-    font-weight: 600;
-    border-radius: 12px;
-    transition: background-color 0.3s ease;
-  }
-
-  .btn-dark:hover {
-    background-color: #000 !important;
-  }
-
-  .container {
-    background-color: #fff;
-    padding: 2.5rem;
-    border-radius: 18px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
-  }
-
-  @media (max-width: 768px) {
-    .container {
-      padding: 1.5rem;
-    }
-  }
-</style>
-
-<body>
-  <div class="container mt-4">
-    <div class="row justify-content-center">
-      <div class="col-lg-6 col-md-8 col-sm-10">
-        <h2 class="text-center mb-4">Create Listing</h2>
-        <form action="/listings" method="post" novalidate class="needs-validation" enctype="multipart/form-data">
-          <div class="mb-3">
-            <label for="title" class="form-label">Title</label>
-            <input type="text" placeholder="Add a catchy title" name="listing[title]" class="form-control" required>
-            <div class="valid-feedback">Title looks good!</div>
+        <!-- Price and Country -->
+        <div class="row price-country">
+          <div class="mb-3 col-md-4">
+            <label for="price" class="form-label">Price</label>
+            <input
+              type="number"
+              placeholder="Enter price in INR"
+              name="listing[price]"
+              class="form-control"
+              required
+            />
+            <div class="invalid-feedback">Price is required!</div>
           </div>
-
-          <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
-            <textarea name="listing[description]" class="form-control" rows="4" required></textarea>
-            <div class="invalid-feedback">Description should be valid!</div>
+          <div class="mb-3 col-md-8">
+            <label for="country" class="form-label">Country</label>
+            <input
+              type="text"
+              placeholder="Enter country name"
+              name="listing[country]"
+              class="form-control"
+              required
+            />
+            <div class="invalid-feedback">Country is required!</div>
           </div>
+        </div>
 
-          <div class="mb-3">
-            <label for="image" class="form-label">Upload Listing Image</label>
-            <input type="file" name="listing[image]" class="form-control">
-          </div>
+        <!-- Location -->
+        <div class="mb-3 location">
+          <label for="location" class="form-label">Location</label>
+          <input
+            type="text"
+            placeholder="Enter location (e.g., city or town)"
+            name="listing[location]"
+            class="form-control"
+            required
+          />
+          <div class="invalid-feedback">Location is required!</div>
+        </div>
 
-          <div class="row">
-            <div class="mb-3 col-md-6">
-              <label for="enter-price" class="form-label">Price</label>
-              <input type="number" placeholder="1200" name="listing[price]" class="form-control" required>
-              <div class="invalid-feedback">Please enter a valid Price!</div>
-            </div>
-
-            <div class="mb-3 col-md-6">
-              <label for="enter-country" class="form-label">Country</label>
-              <input type="text" placeholder="India" name="listing[country]" class="form-control" required>
-              <div class="invalid-feedback">Enter the country name!</div>
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label for="location" class="form-label">Location</label>
-            <input type="text" placeholder="Enter location" name="listing[location]" class="form-control" required>
-            <div class="invalid-feedback">Location should be valid!</div>
-          </div>
-
-          <button class="btn btn-dark add-btn w-100 mt-3 mb-3">Submit</button>
-        </form>
-      </div>
+        <!-- Submit Button -->
+        <button class="btn btn-dark add-btn mt-3 mb-3">Add Listing</button>
+      </form>
     </div>
   </div>
 </body>
-
-<script>
-  function previewImage(event) {
-    const imagePreview = document.getElementById('image-preview');
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        imagePreview.src = e.target.result;
-        imagePreview.classList.remove('d-none');
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-</script>

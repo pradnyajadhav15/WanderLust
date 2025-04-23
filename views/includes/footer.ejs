@@ -1,25 +1,189 @@
-<footer>
-    <div class="f-info"></div>
-
-    <div class="f-info-socials">
-        <i class="fa-brands fa-facebook"></i>
-        <i class="fa-brands fa-instagram"></i>
-        <i class="fa-brands fa-linkedin"></i>
+<style>
+  body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    color:  #212529;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  body.dark-mode {
+    background-color: #212529;
+    color: #f8f9fa;
+  }
+  body.dark-mode a {
+    color: #f8f9fa;
+  }
+  body.dark-mode .f-socials a:hover,
+  body.dark-mode .f-links a:hover {
+    color: #ffc107;
+  }
+  body.dark-mode .newsletter button {
+    background-color: #e0a800;
+  }
+  body.dark-mode .back-to-top {
+    color: #e0a800;
+  }
+  body.dark-mode .back-to-top:hover {
+    transform: translateY(-4px);
+  }
+  body.dark-mode .newsletter input[type="email"],
+  body.dark-mode .newsletter button {
+    background-color: #343a40;
+    color: #f8f9fa;
+  }
+  footer {
+    background-color: #212529;
+    color: #f8f9fa;
+    padding: 1rem 0 1rem;
+    position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 0.95rem;
+  }
+  .f-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 3rem;
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  .f-info .f-socials,
+  .f-info .f-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+  .f-info .f-brand {
+    text-align: center;
+    font-weight: 300;
+  }
+  .f-socials a,
+  .f-links a {
+    color: #f8f9fa;
+    text-decoration: none;
+    font-size: 1.5rem;
+    transition: color 0.3s ease;
+  }
+  .f-socials a:hover,
+  .f-links a:hover {
+    color: #ffc107;
+  }
+  .f-brand p {
+    font-size: 1rem;
+    margin: 0;
+  }
+  .newsletter {
+    text-align: center;
+  }
+  .newsletter p {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+  .newsletter input[type="email"] {
+    padding: 0.8rem 1.2rem;
+    border-radius: 30px;
+    border: 1px solid #ddd;
+    width: 250px;
+    max-width: 100%;
+    margin-right: 0.5rem;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .newsletter input[type="email"]:focus {
+    border-color: #ffc107;
+    box-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
+  }
+  .newsletter button {
+    padding: 0.8rem 1.5rem;
+    border-radius: 30px;
+    border: none;
+    background-color: #ffc107;
+    color: #212529;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  .newsletter button:hover {
+    background-color: #e0a800;
+    transform: translateY(-2px);
+  }
+  .back-to-top {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
+    font-size: 2rem;
+    color: #ffc107;
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+  .back-to-top:hover {
+    transform: translateY(-4px);
+    color: #e0a800;
+  }
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+  .theme-toggle label {
+    font-size: 1.1rem;
+    margin-right: 0.5rem;
+    color: #f8f9fa;
+  }
+  .theme-toggle input {
+    transform: scale(1.5);
+  }
+  @media (max-width: 768px) {
+    .f-info {
+      flex-direction: column;
+      text-align: center;
+    }
+    .newsletter {
+      margin-top: 2rem;
+    }
+    .newsletter input[type="email"] {
+      margin-bottom: 1rem;
+    }
+  }
+</style>
+</head>
+<body>
+<footer id="site-footer">
+  <div class="back-to-top" onclick="scrollToTop()" title="Back to Top">⬆</div>
+  <div class="container">
+    <div class="f-info">
+      <div class="f-socials">
+        <a href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-square"></i></a>
+        <a href="https://www.instagram.com/pradnya_j24/" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram-square"></i></a>
+        <a href="https://www.linkedin.com/in/pradnya-jadhav-173199348/" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+      </div>
+      <div class="f-brand"><p>© WanderLust Private Limited</p></div>
+      <div class="f-links">
+        <a href="/" onclick="event.preventDefault()">Privacy</a>
+        <a href="/" onclick="event.preventDefault()">Terms</a>
+      </div>
     </div>
-
-    <div >&copy; WanderLust Private Limited</div>
-
-    <div class="f-info-links">
-        <a href="/privacy">Privacy</a>
-        <a href="/terms">Terms</a>
-    </div>
+  
+  </div>
 </footer>
-
-<!-- Font Awesome CDN -->
-<link rel="stylesheet" 
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" 
-    integrity="sha384-oBqDVmMz8K4/JQ9xrJfZj9JLjGst8wWM/K7P1qtdNfY4YOHj6g1UQ7G/6DgK1V22" 
-    crossorigin="anonymous">
-
-
-
+<script>
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function toggleTheme() {
+    const body = document.body;
+    const footer = document.getElementById('site-footer');
+    const isDark = body.classList.contains('dark-mode');
+    if (isDark) {
+      body.classList.remove('dark-mode');
+      footer.classList.remove('dark-mode');
+    } else {
+      body.classList.add('dark-mode');
+      footer.classList.add('dark-mode');
+    }
+  }
+</script>
+</body>

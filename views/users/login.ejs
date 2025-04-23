@@ -1,73 +1,36 @@
-<% layout("/layouts/boilerplate") -%>
+<% layout("/layouts/boilerplate") %>
 
-<style>
-  body {
-    background-color: #f8f9fa;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  }
-
-  .container {
-    margin-top: 4rem;
-  }
-
-  h2 {
-    font-weight: 700;
-    color: #343a40;
-    margin-bottom: 2rem;
-  }
-
-  .form-label {
-    font-weight: 500;
-    color: #495057;
-  }
-
-  .form-control {
-    border-radius: 8px;
-    padding: 0.75rem;
-    box-shadow: none;
-    border: 1px solid #ced4da;
-  }
-
-  .form-control:focus {
-    border-color: #000;
-    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.1);
-  }
-
-  .btn-dark {
-    padding: 0.75rem;
-    font-weight: 600;
-    border-radius: 8px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.2s ease;
-  }
-
-  .btn-dark:hover {
-    background-color: #000;
-  }
-
-  .invalid-feedback {
-    font-size: 0.9rem;
-  }
-</style>
-
-
-<div class="container mt-4">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <h2 class="text-center">Login</h2>
-      <form action="/login" method="POST" class="needs-validation" novalidate>
-        <div class="mb-3">
-          <label for="username" class="form-label">Username</label>
-          <input id="username" name="username" type="text" class="form-control" autocomplete="username" required />
-          <div class="invalid-feedback">Please enter your username.</div>
-        </div>  
-        <div class="mb-3">
-          <label for="password" class="form-label">Password</label>
-          <input id="password" name="password" type="password" class="form-control" autocomplete="current-password" required />
-          <div class="invalid-feedback">Please enter your password.</div>
-        </div>
-        <button type="submit" class="btn btn-dark w-100">Login</button>
-      </form>
-    </div>  
+<div class="login-main-div d-flex justify-content-center align-items-center vh-100">
+  <div class="form-div">
+    <h1 class="text-center mb-4">Login For WanderLust</h1>
+    <form action="/login" method="post" novalidate class="needs-validation">
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input
+          type="text"
+          name="username"
+          id="username"
+          required
+          class="form-control"
+        />
+        <div class="invalid-feedback">Username is required!</div>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          required
+          class="form-control"
+        />
+        <div class="invalid-feedback">Password is required!</div>
+      </div>
+      <button class="login-btn btn btn-primary w-100" type="submit">Login</button>
+    </form>
+    <div class="signup-line text-center mt-3">
+      New to WanderNest? Join us and start your adventure today!  
+      <span><a href="/signup" class="text-primary">Sign Up</a></span>
+    </div>
   </div>
 </div>

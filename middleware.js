@@ -1,70 +1,88 @@
-const Listing = require("./models/listing.js");
-const Review = require("./models/review.js");
-const ExpressError = require("./utils/ExpressError.js");
-const { listingSchema, reviewSchema } = require("./schemas.js");
+const Listing = require("./models/listing");
+const Review = require("./models/review");
+const ExpressError = require("./utils/ExpressError");
+const { listingSchema, bookingSchema, reviewSchema } = require("./schema");
 
-module.exports.isLoggedIn = (req, res, next) => {
-    if (!req.isAuthenticated()) {
-        req.session.redirectUrl = req.originalUrl;
-        req.flash("error", "You must be logged in to create a listing");
-        return res.redirect("/login");
-    }
-    next();
+const isLoggedIn = (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    req.session.redirectUrl = req.originalUrl;
+    req.flash("error", "Please LogIn");
+    return res.redirect("/login");
+  }
+  next();
 };
 
-module.exports.saveRedirectUrl = (req, res, next) => {
-    if (req.session.redirectUrl) {
-        res.locals.redirectUrl = req.session.redirectUrl;
-    }
-    next();
+const saveRedirectUrl = (req, res, next) => {
+  if (req.session.redirectUrl) {
+    res.locals.redirectUrl = req.session.redirectUrl;
+  }
+  next();
 };
 
-module.exports.isOwner = async (req, res, next) => {
-    let { id } = req.params;
-    let listing = await Listing.findById(id);
-
-    if (!listing) {
-        req.flash("error", "Listing not found");
-        return res.redirect("/listings");
-    }
-
-    if (!res.locals.currUser || !listing.owner.equals(res.locals.currUser._id)) {
-        req.flash("error", "You are not the owner of this listing");
-        return res.redirect(`/listings/${id}`);
-    }
-    next();
+const isOwner = async (req, res, next) => {
+  const { id } = req.params;
+  const listing = await Listing.findById(id);
+  if (!listing.owner._id.equals(res.locals.currUser._id)) {
+    req.flash("error", "You are not Authorized");
+    return res.redirect(`/listings/${id}`);
+  }
+  next();
 };
 
-module.exports.validateListing = (req, res, next) => {
-    let { error } = listingSchema.validate(req.body);
-    if (error) {
-        let errMsg = error.details.map(el => el.message).join(", ");
-        throw new ExpressError(400, errMsg);
-    }
-    next();
+const isReviewAuthor = async (req, res, next) => {
+  const { id, reviewId } = req.params;
+  const review = await Review.findById(reviewId);
+  if (!review.author.equals(res.locals.currUser._id)) {
+    req.flash("error", "You are not Author of this review");
+    return res.redirect(`/listings/${id}`);
+  }
+  next();
 };
 
-module.exports.validateReview = (req, res, next) => {
-    let { error } = reviewSchema.validate(req.body);
-    if (error) {
-        let errMsg = error.details.map(el => el.message).join(", ");
-        throw new ExpressError(400, errMsg);
-    }
+const validateListing = (req, res, next) => {
+  console.log(req.body);
+  const cleanListing = {
+    listing: { ...req.body.listing },
+  };
+  console.log("new data", cleanListing);
+  let { error } = listingSchema.validate(cleanListing);
+
+  if (error) {
+    console.log("Errpr isss", error);
+    let errMsg = error.details.map((e) => e.message).join(",");
+    console.log("errmsg", errMsg);
+    throw new ExpressError(400, errMsg);
+  } else {
     next();
+  }
 };
 
-module.exports.isReviewAuthor = async (req, res, next) => {
-    let { id, reviewId } = req.params;
-    let review = await Review.findById(reviewId);
-
-    if (!review) {
-        req.flash("error", "Review not found");
-        return res.redirect(`/listings/${id}`);
-    }
-
-    if (!res.locals.currUser || !review.author.equals(res.locals.currUser._id)) {
-        req.flash("error", "You are not the author of this review");
-        return res.redirect(`/listings/${id}`);
-    }
+const validateReview = (req, res, next) => {
+  let { error } = reviewSchema.validate(req.body);
+  if (error) {
+    let errMsg = error.details.map((e) => e.message).join(",");
+    throw new ExpressError(400, errMsg);
+  } else {
     next();
+  }
+};
+
+const validateBooking = (req, res, next) => {
+  const { error } = bookingSchema.validate(req.body, { abortEarly: false });
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(", ");
+    throw new ExpressError(400, msg);
+  } else {
+    next();
+  }
+};
+
+module.exports = {
+  isLoggedIn,
+  saveRedirectUrl,
+  isOwner,
+  isReviewAuthor,
+  validateListing,
+  validateReview,
+  validateBooking,
 };

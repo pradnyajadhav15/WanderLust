@@ -1,182 +1,128 @@
-<% layout("./layouts/boilerplate") %> 
+<% layout("/layouts/boilerplate.ejs") %>
+
 <body>
-  <style>
-    #filters {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1rem;
-      padding: 1rem;
-      background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-    }
+  <!-- Top Navbar -->
+  <nav class="navbar fixed-top shadow-sm px-4 py-3 bg-white d-flex justify-content-between align-items-center">
+    <h4 class="m-0 fw-bold">🌍 WanderLust</h4>
+    <div>
+      <button class="btn btn-sm btn-outline-dark me-2" onclick="toggleDarkMode()">🌗 Dark Mode</button>
+      <a href="/wishlist/" class="btn btn-sm btn-outline-danger">
+        <i class="fa-solid fa-heart"></i> Wishlist
+      </a>
+    </div>
+  </nav>
 
-    .filter {
-      text-align: center;
-      opacity: 0.8;
-      transition: all 0.3s ease;
-      padding: 0.75rem;
-      border-radius: 12px;
-      background: #f1f3f5;
-      min-width: 90px;
-    }
+  <!-- Main Content -->
+  
+    <div class="search-container py-3 px-4 rounded shadow-sm bg-light mb-3">
 
-    .filter:hover {
-      opacity: 1;
-      cursor: pointer;
-      background: #e9ecef;
-      transform: translateY(-2px);
-    }
+    <!-- Search and Sorting -->
+    <div class="search-container p-4 rounded shadow-sm bg-light mb-4">
+      <form action="/listings/indivisual/search" method="GET">
+        <div class="row g-3 align-items-center">
+          <!-- Search Input -->
+          <div class="col-md-6 col-sm-12">
+            <input 
+              type="text" 
+              name="query" 
+              class="form-control form-control-lg rounded-pill" 
+              placeholder="Search by title, location, country..." 
+              required 
+            />
+          </div>
 
-    .filter a {
-      text-decoration: none;
-      color: #212529;
-    }
+          <!-- Search Button -->
+          <div class="col-auto">
+            <button type="submit" class="btn btn-primary btn-lg rounded-pill px-4">
+              <i class="fas fa-search me-2"></i> Search
+            </button>
+          </div>
 
-    .filter i {
-      font-size: 1.2rem;
-      margin-bottom: 0.3rem;
-    }
+          <!-- Sorting Buttons -->
+          <div class="col-auto">
+            <a href="/listings/feature/order/asc" class="btn btn-outline-secondary btn-lg rounded-pill">Price ↑</a>
+          </div>
+          <div class="col-auto">
+            <a href="/listings/feature/order/desc" class="btn btn-outline-secondary btn-lg rounded-pill">Price ↓</a>
+          </div>
+        </div>
+      </form>
+    </div>
 
-    .filter p {
-      font-size: 0.85rem;
-      margin: 0;
-    }
-
-    .tax-info {
-      display: none;
-    }
-
-    .tex-switch {
-      display: flex;
-      align-items: center;
-      padding: 0.5rem 1.2rem;
-      border-radius: 12px;
-      border: 1px solid #dee2e6;
-      margin: 1.5rem auto;
-      cursor: pointer;
-      width: fit-content;
-      background: #f8f9fa;
-      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
-    }
-
-    .form-check-input:checked {
-      background-color: #000;
-      border-color: #000;
-    }
-
-    .listing-card {
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      border: none;
-      border-radius: 16px;
-      overflow: hidden;
-      background: #ffffff;
-    }
-
-    .listing-card:hover {
-      transform: scale(1.015);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    }
-
-    .card-img-top {
-      height: 260px;
-      object-fit: cover;
-    }
-
-    .card-body {
-      padding: 1rem;
-      background: #fff;
-    }
-
-    .card-text {
-      font-size: 0.95rem;
-      color: #343a40;
-    }
-
-    .listing-link {
-      text-decoration: none;
-    }
-
-    @media (max-width: 768px) {
-      .row {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .filter {
-        flex: 1 1 40%;
-      }
-
-      .tex-switch {
-        width: 100%;
-        justify-content: center;
-      }
-    }
-  </style>
-
-  <div id="filters">
-    <% const categories = [
-      { name: "Trending", icon: "fa-fire" },
-      { name: "Rooms", icon: "fa-bed" },
-      { name: "Iconic Cities", icon: "fa-mountain-city" },
-      { name: "Mountains", icon: "fa-mountain" },
-      { name: "Castles", icon: "fa-fort-awesome" },
-      { name: "Amazing Pools", icon: "fa-person-swimming" },
-      { name: "Camping", icon: "fa-campground" },
-      { name: "Farms", icon: "fa-cow" },
-      { name: "Arctic", icon: "fa-snowflake" },
-      { name: "Domes", icon: "fa-igloo" }
-    ]; %>
-
-    <% for (let category of categories) { %>
-      <div class="filter">
-        <a href="/listings/category/<%= category.name %>">
-          <div><i class="fa-solid <%= category.icon %>"></i></div>
-          <p><%= category.name %></p>
-        </a>
+    <!-- Listings -->
+    <% if (allListings.length > 0) { %>
+      <h2 class="mb-4 text-center">✨ Explore Listings</h2>
+      <div class="row row-cols-xl-4 row-cols-lg-3 row-cols-md-2 row-cols-1 g-4">
+        <% for (let listing of allListings) { %>
+          <a href="/listings/<%= listing.id %>" class="listing-link text-decoration-none">
+            <div class="card listing-card h-100 border-0 shadow-sm rounded-4 overflow-hidden position-relative">
+              <i 
+                class="fa-heart position-absolute top-0 end-0 m-3 fs-4 
+                <%= wishlistIds.includes(listing._id.toString()) ? 'fa-solid active text-danger' : 'fa-regular text-muted' %>"
+                data-id="<%= listing._id %>">
+              </i>
+              <img 
+                src="<%= listing.image.url %>" 
+                class="card-img-top" 
+                style="height: 200px; object-fit: cover;" 
+              />
+              <div class="card-body text-center">
+                <h5 class="card-title fw-bold mb-2"><%= listing.title %></h5>
+                <p class="text-muted mb-1">📍 <%= listing.location %>, <%= listing.country %></p>
+                <p class="text-primary fw-semibold">&#8377; <%= listing.price.toLocaleString("en-IN") %> / night</p>
+              </div>
+            </div>
+          </a>
+        <% } %>
+      </div>
+    <% } else { %>
+      <div class="text-center mt-5">
+        <h4 class="mb-3 text-muted">Oops! No listings found 🥺</h4>
+        <p class="mb-4">Seems like your dream stay is playing hide and seek! 🏡🔍</p>
+        <a href="/listings" class="btn btn-primary rounded-pill px-4 py-2">Get All Listings</a>
       </div>
     <% } %>
   </div>
 
-
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <div class="tex-switch">
-    <div class="form-check-reverse form-switch">
-
-      <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked>
-
-      <label class="form-check-label" for="flexSwitchCheckDefault">Display total after taxes</label>
-    </div>
-  </div>
-
-  <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3"> 
-    <% for (let listings of allListings) { %>
-      <a href="/listings/<%= listings._id %>" class="listing-link">
-        <div class="card col listing-card">
-          <img src="<%= listings.image.url %>" class="card-img-top" alt="listing_image">
-          <div class="card-body">
-            <p class="card-text">
-              <b><%= listings.title %></b> <br>
-              &#8377; <%= listings.price.toLocaleString("en-IN") %>/night 
-              <i class="tax-info"> &nbsp; &nbsp;+18% GST</i>
-            </p>
-          </div>
-        </div>
-      </a>
-    <% } %>
-  </div>
-
-  
+  <!-- Scripts -->
   <script>
-    let taxSwitch = document.getElementById("flexSwitchCheckDefault");
-    taxSwitch.addEventListener("click", () => {
-      let taxInfo = document.getElementsByClassName("tax-info");
-      for (let info of taxInfo) {
-        info.style.display = info.style.display !== "inline" ? "inline" : "none";
-      }
+    // Wishlist icon toggle
+    document.querySelectorAll(".fa-heart").forEach((heart) => {
+      heart.addEventListener("click", async (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        heart.classList.toggle("fa-solid");
+        heart.classList.toggle("fa-regular");
+        heart.classList.toggle("text-danger");
+        heart.classList.toggle("text-muted");
+
+        const listingId = heart.getAttribute("data-id");
+        const res = await fetch("/wishlist/add", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ listingId }),
+        });
+
+        const data = await res.json();
+        if (data.action === "added") {
+          heart.classList.add("fa-solid", "text-danger");
+          heart.classList.remove("fa-regular", "text-muted");
+        } else {
+          heart.classList.remove("fa-solid", "text-danger");
+          heart.classList.add("fa-regular", "text-muted");
+        }
+      });
     });
+
+    // Dark mode toggle
+    function toggleDarkMode() {
+      document.body.classList.toggle("bg-dark");
+      document.body.classList.toggle("text-white");
+      document.querySelectorAll(".card").forEach((card) => {
+        card.classList.toggle("bg-dark");
+        card.classList.toggle("text-white");
+      });
+    }
   </script>
 </body>
