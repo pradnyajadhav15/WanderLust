@@ -27,10 +27,10 @@ if (process.env.NODE_ENV !== "production") {
   const app = express();
   const PORT = process.env.PORT || 8080;
   
-  // ✅ Correct MongoDB URL
+  //  MongoDB URL
   const dbUrl = process.env.ATLASDB_URL;
   
-  // ✅ MongoDB session store setup
+  // MongoDB session store setup
   const store = MongoStore.create({
     mongoUrl: dbUrl,
     crypto: {
@@ -44,7 +44,7 @@ if (process.env.NODE_ENV !== "production") {
   });
   
   
-  // ✅ Session config
+  //  Session config
   const sessionOptions = {
     store,
     secret: process.env.SESSION_SECRET,
@@ -60,14 +60,14 @@ if (process.env.NODE_ENV !== "production") {
   app.use(session(sessionOptions));
   app.use(flash());
   
-  // ✅ Passport setup
+  //  Passport setup
   app.use(passport.initialize());
   app.use(passport.session());
   passport.use(new LocalStrategy(User.authenticate()));
   passport.serializeUser(User.serializeUser());
   passport.deserializeUser(User.deserializeUser());
   
-  // ✅ Flash and user middleware
+  //  Flash and user middleware
   app.use((req, res, next) => {
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
@@ -76,7 +76,7 @@ if (process.env.NODE_ENV !== "production") {
     next();
   });
   
-  // ✅ App setup
+  // App setup
   app.set("view engine", "ejs");
   app.set("views", path.join(__dirname, "/views"));
   app.engine("ejs", ejsMate);
@@ -85,26 +85,26 @@ if (process.env.NODE_ENV !== "production") {
   app.use(methodoverride("_method"));
   app.use(express.static(path.join(__dirname, "/public")));
   
-  // ✅ Mongoose connection
+  //  Mongoose connection
   mongoose
     .connect(dbUrl)
     .then(() => console.log("MongoDB is connected"))
     .catch((e) => console.log("Error in MongoDB", e));
   
-  // ✅ Routes
+  //  Routes
   app.use("/listings", listingsRoute);
   app.use("/listings/:id/review", reviewRoute);
   app.use("/", userRoute);
   app.use("/wishlist", wishlistRoute);
   app.use("/bookings", bookingRoutes);
   
-  // ✅ Home route
+  //  Home route
   app.get("/", (req, res) => {
     res.locals.page = "home";
     res.render("Home");
   });
   
-  // ✅ Contact Us route
+  // Contact Us route
   app.get("/contactUs", (req, res) => {
     res.render("Contact");
   });
@@ -114,17 +114,17 @@ if (process.env.NODE_ENV !== "production") {
     res.redirect("/listings");
   });
   
-  // ✅ 404 handler
+  // 404 handler
   app.all("*", (req, res, next) => {
     next(new ExpressError(404, "Page Not Found"));
   });
   
-  // ✅ Global error handler
+  // Global error handler
   app.use((err, req, res, next) => {
     const { statusCode = 500, message = "Something went wrong!" } = err;
     res.status(statusCode).render("Error", { statusCode, message });
   });
   
-  // ✅ Start server
+  // Start server
   app.listen(PORT, () => console.log(`App is listening on port: ${PORT}`));
   
