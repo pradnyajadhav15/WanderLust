@@ -1,69 +1,174 @@
 <style>
-  /* Hover effect for cards */
-.card.hover-up:hover {
-  transform: translateY(-10px); /* Lift the card */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Add a shadow */
-  transition: all 0.3s ease; /* Smooth transition */
-}
+  .card.hover-up {
+    transition: all 0.3s ease;
+    border-radius: 1rem;
+  }
 
-.card.hover-up {
-  transition: all 0.3s ease; /* Ensure smooth transition even when not hovered */
-}
+  .card.hover-up:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+    background-color: #e0f7fa;
+  }
 
-/* Optional: Add a slight background change when hovering */
-.card.hover-up:hover {
-  background-color: #f8f9fa; /* Light grey background on hover */
-}
+  .fade-in {
+    opacity: 0;
+    animation: fadeIn 0.8s ease forwards;
+  }
 
+  .delay-0 { animation-delay: 0s; }
+  .delay-1 { animation-delay: 0.2s; }
+  .delay-2 { animation-delay: 0.4s; }
+  .delay-3 { animation-delay: 0.6s; }
+
+  @keyframes fadeIn {
+    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(20px); }
+  }
+
+  .text-gradient {
+    background: linear-gradient(to right, #81d4fa, #b3e5fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .section-heading {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #0288d1;
+  }
+
+  .btn-primary {
+    background-color: #81d4fa;
+    border-color: #81d4fa;
+  }
+
+  .btn-outline-dark {
+    border-color: #81d4fa;
+    color: #81d4fa;
+  }
+
+  .btn-outline-dark:hover {
+    background-color: #81d4fa;
+    color: white;
+  }
+
+  .bg-light-pink {
+    background-color: #e0f7fa;
+  }
+
+  .bg-dark-pink {
+    background: linear-gradient(135deg, #81d4fa, #0288d1);
+  }
+
+  .text-dark-pink {
+    color: #0288d1;
+  }
+
+  .bg-light-blue {
+    background-color: #e0f7fa;
+  }
+
+  .bg-gradient-blue {
+    background: linear-gradient(135deg, #81d4fa, #0288d1);
+  }
+
+  .text-blue {
+    color: #0288d1;
+  }
+
+  .card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+  }
+
+  .card {
+    transition: all 0.3s ease;
+  }
+
+  .hover-box {
+    transition: all 0.3s ease;
+  }
+
+  .hover-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    background-color: #f7f9fc;
+  }
 </style>
 
-
 <% layout("/layouts/boilerplate.ejs") %>
+
 <body class="bg-white text-dark">
 
   <!-- Hero Section -->
-  <section class="hero-section py-5" style="background: linear-gradient(135deg, #e0f7fa, #ffffff);">
-    <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-4">
-      <div class="hero-text fade-in">
-        <h1 class="display-4 fw-bold text-primary mb-3">Welcome to <span class="text-gradient">WanderLust</span></h1>
+  <section class="hero-section py-5 bg-light-pink">
+    <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-5">
+      <div class="hero-text fade-in delay-0">
+        <h1 class="display-4 fw-bold text-gradient mb-3">
+          Explore, Discover, Experience – WanderLust Awaits
+        </h1>
         <p class="lead text-muted mb-4">
-          Turn your space into a destination! List your place and connect with travelers worldwide.
+          Your dream vacation is just a click away. Browse unique listings, book unforgettable stays, and let the adventure begin
         </p>
-        <div class="d-flex gap-3">
-          <a href="/listings/new/" class="btn btn-primary btn-lg shadow">
-            <i class="fa-solid fa-plus me-2"></i> Add Listing
+        <div class="d-flex gap-3 flex-wrap">
+          <a href="/listings/new/" class="btn btn-primary btn-lg shadow px-4">
+            <i class="fa-solid fa-plus me-2"></i> Add Listings
           </a>
-          <a href="/listings" class="btn btn-outline-dark btn-lg">
-            <i class="fa-solid fa-eye me-2"></i> Browse Listings
+          <a href="/listings" class="btn btn-outline-dark btn-lg px-4">
+            <i class="fa-solid fa-eye me-2"></i> Explore Destinations
           </a>
+          <button class="btn btn-outline-dark btn-lg px-4" data-bs-toggle="modal" data-bs-target="#hostModal">
+            Become a Host 🏡
+          </button>
         </div>
       </div>
-      <div class="hero-image fade-in delay-1">
+      <div class="hero-image fade-in delay-1 text-center">
         <img src="https://cdn-icons-png.flaticon.com/512/201/201623.png" alt="Travel" class="img-fluid" style="max-height: 350px;">
       </div>
     </div>
   </section>
 
-  <!-- Categories Section -->
-  <section class="py-5 bg-light">
+  <!-- Modal -->
+  <div class="modal fade" id="hostModal" tabindex="-1" aria-labelledby="hostModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="hostModalLabel">Become a Host on WanderLust</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Join us and start hosting travelers from around the world. It's easy to list your property, set your own rules, and earn income!</p>
+          <ul>
+            <li>💸 Earn income by listing your space</li>
+            <li>🌐 Reach a global community of travelers</li>
+            <li>📍 Set your own pricing, rules & schedule</li>
+            <li>🛡️ Get protection with Host Cover & 24/7 support</li>
+          </ul>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Categories -->
+  <section class="py-5 bg-white">
     <div class="container text-center">
-      <h2 class="mb-5 fade-in delay-2">
-        <span class="text-primary fs-2">🌟</span> Top Categories <span class="text-primary fs-2">🌍</span>
-      </h2>
+      <h2 class="section-heading mb-5 fade-in delay-1">⭐ Top Categories</h2>
       <div class="row g-4 justify-content-center">
         <% const categories = [
-          { icon: "fa-mountain", name: "Mountains" },
-          { icon: "fa-umbrella-beach", name: "Beaches" },
-          { icon: "fa-city", name: "Cities" },
-          { icon: "fa-tree", name: "Forests" },
-          { icon: "fa-snowflake", name: "Snow" },
-          { icon: "fa-monument", name: "Historical" }
+          { icon: "fa-mountain", name: "Mountain Adventures" },
+          { icon: "fa-umbrella-beach", name: "Beach Escapes" },
+          { icon: "fa-city", name: "City Escapes" },
+          { icon: "fa-tree", name: "Forest Retreats" },
+          { icon: "fa-snowflake", name: "Winter Wonders" },
+          { icon: "fa-monument", name: "Historical Wonders" }
         ]; %>
         <% categories.forEach((c, i) => { %>
           <div class="col-6 col-md-4 col-lg-2 fade-in delay-<%= i %>">
-            <div class="card shadow-sm border-0 p-3 h-100 hover-up">
-              <i class="fa-solid <%= c.icon %> text-primary fs-1 mb-3"></i>
-              <h5 class="fw-semibold"><%= c.name %></h5>
+            <div class="card shadow-sm p-4 hover-up text-center">
+              <i class="fa-solid <%= c.icon %> text-dark-pink fs-1 mb-3"></i>
+              <h5 class="fw-semibold mb-0 text-dark"><%= c.name %></h5>
             </div>
           </div>
         <% }); %>
@@ -71,25 +176,25 @@
     </div>
   </section>
 
-  <!-- Services Section -->
-  <section class="py-5 bg-white">
+  <!-- Services -->
+  <section class="py-5 bg-light-pink">
     <div class="container text-center">
-      <h2 class="mb-3 fade-in">Our Services</h2>
-      <p class="text-muted mb-5">Helping travelers and hosts get the most out of every journey.</p>
+      <h2 class="section-heading mb-3 fade-in delay-1">Our Offerings</h2>
+      <p class="text-muted mb-5">Dedicated to making your travel seamless and enjoyable, every step of the way.</p>
       <div class="row g-4">
         <% const services = [
-          { title: "Property Listing", desc: "List your property and connect with travelers.", img: "https://cdn-icons-png.flaticon.com/512/2777/2777142.png" },
-          { title: "Travel Experiences", desc: "Book unique travel experiences.", img: "https://cdn-icons-png.flaticon.com/512/869/869869.png" },
-          { title: "Secure Payments", desc: "Fast, secure payment options.", img: "https://tse1.mm.bing.net/th?id=OIP.K5qj7NgVyXN-VKE4zAqBYwHaFj&pid=Api&P=0&h=180" },
-          { title: "24/7 Support", desc: "Round-the-clock assistance.", img: "https://cdn-icons-png.flaticon.com/512/1256/1256650.png" }
+          { title: "Host Your Property", desc: "Get your place listed for travelers from around the globe.", img: "https://cdn-icons-png.flaticon.com/512/2777/2777142.png" },
+          { title: "Explore Unique Adventures", desc: "Book experiences curated by locals, from hiking to cultural tours.", img: "https://cdn-icons-png.flaticon.com/512/869/869869.png" },
+          { title: "Fast & Secure Payments", desc: "Enjoy a seamless and secure payment experience for every transaction.", img: "https://tse1.mm.bing.net/th?id=OIP.K5qj7NgVyXN-VKE4zAqBYwHaFj&pid=Api&P=0&h=180" },
+          { title: "24/7 Support", desc: "Our team is always ready to assist you, no matter the time zone.", img: "https://cdn-icons-png.flaticon.com/512/1256/1256650.png" }
         ]; %>
         <% services.forEach((s, i) => { %>
           <div class="col-md-6 fade-in delay-<%= i %>">
-            <div class="card h-100 shadow hover-up">
+            <div class="card h-100 shadow hover-up border-0 p-3">
               <div class="card-body d-flex align-items-center">
                 <div class="flex-grow-1 text-start">
-                  <h4 class="card-title fw-bold"><%= s.title %></h4>
-                  <p class="text-muted"><%= s.desc %></p>
+                  <h4 class="card-title fw-bold text-dark-pink"><%= s.title %></h4>
+                  <p class="text-muted mb-0"><%= s.desc %></p>
                 </div>
                 <img src="<%= s.img %>" alt="<%= s.title %>" width="70" class="ms-3">
               </div>
@@ -100,14 +205,14 @@
     </div>
   </section>
 
-  <!-- CTA Section -->
-  <section class="py-5 bg-dark text-white">
+  <!-- CTA -->
+  <section class="py-5 bg-dark-pink text-white">
     <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-4">
-      <div class="fade-in">
-        <h2 class="fw-bold">Ready to Grow Your Business?</h2>
-        <p class="text-muted">Contact us today and let us help expand your reach!</p>
-        <a href="/contactUs" class="btn btn-outline-light btn-lg mt-3">
-          Contact Us <i class="fa-solid fa-arrow-right ms-2"></i>
+      <div class="fade-in delay-0">
+        <h2 class="fw-bold">Ready to Take Your Business to the Next Level?</h2>
+        <p class="text-light">Contact us today and discover how our powerful digital marketing strategies can help you reach more customers and grow your brand.</p>
+        <a href="/contactUs" class="btn btn-outline-light btn-lg mt-3 px-4">
+          Reach Out <i class="fa-solid fa-arrow-right ms-2"></i>
         </a>
       </div>
       <div class="fade-in delay-1">
@@ -117,23 +222,23 @@
     </div>
   </section>
 
-  <!-- Testimonials Section -->
-  <section class="py-5 bg-light">
-    <div class="container text-center">
-      <h2 class="mb-4 fade-in">Success Stories</h2>
-      <p class="text-muted mb-5">Our clients share their experiences</p>
+  <!-- Testimonials -->
+  <section class="py-5 bg-white">
+    <div class="container text-center ">
+      <h2 class="section-heading mb-4 fade-in delay-0">What Our Users Say</h2>
+      <p class="text-muted mb-5">Our users’ feedback speaks volumes about their experiences.</p>
       <div class="row g-4">
         <% const stories = [
-          { icon: "fa-chart-line", name: "Tour Company", text: "We optimized a local tour company’s site and increased bookings by 70%." },
-          { icon: "fa-hotel", name: "Hotel Chain", text: "Our strategy gained 50k+ followers and doubled engagement." },
-          { icon: "fa-plane", name: "Travel Agency", text: "Saw a 40% increase in traffic with our SEO services." }
+          { icon: "fa-chart-line", name: "Wander Travel Co.", text: "Our bookings surged 50% after listing our properties here." },
+          { icon: "fa-hotel", name: "Beachfront Retreats", text: "Our guest reviews have never been better!" },
+          { icon: "fa-plane", name: "SkyHigh Adventures", text: "We saw a 30% increase in site visitors thanks to WanderLust." }
         ]; %>
         <% stories.forEach((story, i) => { %>
           <div class="col-md-4 fade-in delay-<%= i %>">
-            <div class="card shadow h-100 p-3">
+            <div class="card shadow h-100 p-4 text-start">
               <p class="card-text">"<%= story.text %>"</p>
               <div class="d-flex align-items-center mt-4">
-                <div class="bg-primary text-white rounded-circle p-3 me-3">
+                <div class="bg-dark-pink text-white rounded-circle p-3 me-3">
                   <i class="fa-solid <%= story.icon %>"></i>
                 </div>
                 <h5 class="mb-0"><%= story.name %></h5>
@@ -144,4 +249,47 @@
       </div>
     </div>
   </section>
+
+  <!-- Comparison -->
+  <section class="py-5 bg-light-blue">
+    <div class="container">
+      <h2 class="text-center mb-5 fw-bold text-blue">Stay. Host. Explore. The WanderLust Way</h2>
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="bg-white p-4 rounded shadow-sm h-100 border-info">
+            <h3 class="text-blue mb-3">As a Traveler 🌏✈️</h3>
+            <ul class="list-unstyled">
+              <li class="mb-2">🌄 Diverse stays: apartments, villas, cabins & more</li>
+              <li class="mb-2">💰 Better value than hotels, especially for groups</li>
+              <li class="mb-2">🏙️ Live like a local in unique destinations</li>
+              <li class="mb-2">📆 Flexible short & long-term booking options</li>
+              <li class="mb-2">🏅 Verified reviews & trusted hosts</li>
+              <li class="mb-2">🏞️ Unique experiences and offbeat stays</li>
+              <li class="mb-2">🌍 Book local adventures through our platform</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="bg-white p-4 rounded shadow-sm h-100 border-info">
+            <h3 class="text-blue mb-3">As a Host 🏡👨‍💻</h3>
+            <ul class="list-unstyled">
+              <li class="mb-2">💸 Earn income by listing your space</li>
+              <li class="mb-2">🌐 Reach a global community of travelers</li>
+              <li class="mb-2">📍 Set your own pricing, rules & schedule</li>
+              <li class="mb-2">🛡️ Get protection with Host Cover & 24/7 support</li>
+              <li class="mb-2">🖥️ Smart dashboard for easy listing management</li>
+              <li class="mb-2">📅 Host whenever it suits you</li>
+              <li class="mb-2">📚 Learn & grow through the host community</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <script type="text/javascript">window.$crisp=[];window.CRISP_WEBSITE_ID="10343de0-e133-4a8f-98ef-a7a791016b91";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();</script>
+
+
+
 </body>

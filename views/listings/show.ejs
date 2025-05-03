@@ -1,3 +1,61 @@
+<style>
+  .custom-review-bg {
+  background-color: #b3e5fc !important;
+  color: #212529;
+}
+
+.custom-review-bg .form-control,
+.custom-review-bg textarea {
+  background-color: #e1f5fe;
+  color: #212529;
+  border: 1px solid #90caf9;
+}
+
+.custom-review-bg .form-control:focus,
+.custom-review-bg textarea:focus {
+  border-color: #0288d1;
+  box-shadow: 0 0 0 0.2rem rgba(2, 136, 209, 0.25);
+}
+
+
+.btn-bookListing-outline-custom {
+  color: #01579b;
+  border: 2px solid #01579b;
+  background-color: transparent;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-bookListing-outline-custom:hover {
+  background-color: #01579b;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(1, 87, 155, 0.2);
+}
+
+
+
+
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <% layout("/layouts/boilerplate.ejs") %>
 <body class="show-page-body container-fluid p-0">
   <div class="container py-5">
@@ -37,13 +95,15 @@
             <form action="/bookings">
               <!-- Trigger Button -->
               <button
-                type="button"
-                class="btn btn-bookListing-outline-custom"
-                data-bs-toggle="modal"
-                data-bs-target="#bookingModal"
-                title="Book this listing"
-              >
-                Book Listing
+              type="button"
+              class="btn btn-bookListing-outline-custom"
+              data-bs-toggle="modal"
+              data-bs-target="#bookingModal"
+              title="Book this listing"
+            >
+              <i class="fa-solid fa-calendar-check me-2"></i> Book Listing
+            </button>
+            
               </button>
             </form>
           </div>
@@ -82,23 +142,26 @@
       ></div>
     </div>
 
-  
-
-
-    <!-- Leave a Review Section -->
-    <% if(currUser){ %>
-    <hr class="mt-5 animated-hr" />
-    <div class="mt-5">
-      <h2 class="text-center mb-4 review-heading">Leave a Review</h2>
-      <div
-        class="card p-4 border-0 rounded-4 shadow-lg bg-dark text-light review-card"
+<!-- Leave a Review Section -->
+<% if(currUser){ %>
+  <hr class="mt-5 animated-hr" />
+  <div class="mt-5">
+    <h2 class="text-center mb-4 review-heading">Leave a Review</h2>
+    <div
+      class="card p-4 border-0 rounded-4 shadow-lg bg-dark text-light review-card"
+    >
+      <form
+        action="/listings/<%= individualListings._id %>/review"
+        method="post"
+        class="needs-validation"
       >
-        <form
-          action="/listings/<%= individualListings._id %>/review"
-          method="post"
-          class="needs-validation"
-        >
-          <!-- Star Rating -->
+
+
+
+
+
+
+      <!-- Star Rating -->
           <div class="mb-3">
             <label class="form-label">Rating</label>
             <fieldset class="starability-slot">

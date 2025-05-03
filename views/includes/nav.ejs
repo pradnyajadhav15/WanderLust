@@ -1,6 +1,6 @@
 <style>
   .navbar {
-    background-color: #ffffff;
+    background-color: #e0f7fa; /* Soft baby blue */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease-in-out;
     font-weight: 500;
@@ -10,23 +10,23 @@
 
   .navbar-brand {
     font-size: 1.6rem;
-    color: #0066cc;
+    color: #0288d1; /* Baby blue */
     transition: color 0.3s ease;
   }
 
   .navbar-brand:hover {
-    color: #004c99;
+    color: #01579b; /* Darker baby blue for hover */
   }
 
   .nav-link {
     position: relative;
     padding: 0.5rem 1rem;
     transition: color 0.3s ease;
-    color: #333333 !important;
+    color: #0288d1 !important; /* Baby blue text color */
   }
 
   .nav-link:hover {
-    color: #0066cc !important;
+    color: #01579b !important; /* Darker baby blue for hover */
   }
 
   .nav-link::after {
@@ -36,7 +36,7 @@
     bottom: 0;
     width: 80%;
     height: 2px;
-    background-color: #0066cc;
+    background-color: #0288d1; /* Baby blue underline */
     transform: scaleX(0);
     transform-origin: bottom right;
     transition: transform 0.3s ease-out;
@@ -66,8 +66,10 @@
   <div class="container-fluid">
     <!-- Brand -->
     <a class="navbar-brand gsap-navbar-icon" href="/">
-      <i class="fa-regular fa-compass"></i>
+      <i class="fa-regular fa-compass" style="color: #0288d1;"></i>
+      <span style="color: #0288d1; font-weight: bold; font-size: 1.8rem; margin-left: 8px;">WanderLust</span>
     </a>
+    
 
     <!-- Toggle -->
     <button
@@ -125,4 +127,3 @@
     </div>
   </div>
 </nav>
-

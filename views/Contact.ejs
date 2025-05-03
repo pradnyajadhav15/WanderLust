@@ -1,6 +1,6 @@
 <% layout("/layouts/boilerplate.ejs") %>
 
-<body class=" contactUs-form-body  container-fluid p-0">
+<body class="contactUs-form-body container-fluid p-0">
   <div class="row justify-content-center">
     <div class="col-md-10 col-lg-8 gsap-form">
       <h1 class="mb-3 contactUs-heading text-center">Contact Us</h1>
@@ -8,16 +8,16 @@
         
         <!-- Name Field -->
         <div class="mb-3">
-          <label for="name" class="form-label">Full Name</label>
+          <label for="name" class="form-label">Your Full Name</label>
           <input
             type="text"
             id="name"
             name="name"
-            placeholder="Enter your full name"
             class="form-control"
+           
             required
           />
-          <div class="invalid-feedback">Please enter your full name.</div>
+          <div class="invalid-feedback">Full name is required.</div>
         </div>
 
         <!-- Email Field -->
@@ -27,11 +27,11 @@
             type="email"
             id="email"
             name="email"
-            placeholder="Enter your email"
             class="form-control"
+          
             required
           />
-          <div class="invalid-feedback">Please enter a valid email address.</div>
+          <div class="invalid-feedback">A valid email is required.</div>
         </div>
 
         <!-- Phone Number Field -->
@@ -41,26 +41,26 @@
             type="tel"
             id="phone"
             name="phone"
-            placeholder="Enter your phone number"
             class="form-control"
+            
             pattern="[0-9]{10}"
             required
           />
-          <div class="invalid-feedback">Please enter a valid 10-digit phone number.</div>
+          <div class="invalid-feedback">Please enter a 10-digit phone number.</div>
         </div>
 
         <!-- Subject Field -->
         <div class="mb-3">
-          <label for="subject" class="form-label">Subject</label>
+          <label for="subject" class="form-label">Message Subject</label>
           <input
             type="text"
             id="subject"
             name="subject"
-            placeholder="Enter the subject of your message"
             class="form-control"
+          
             required
           />
-          <div class="invalid-feedback">Please enter a subject.</div>
+          <div class="invalid-feedback">Subject cannot be empty.</div>
         </div>
 
         <!-- Message Field -->
@@ -69,20 +69,20 @@
           <textarea
             id="message"
             name="message"
-            placeholder="Write your message here..."
             class="form-control"
+            placeholder="Let us know how we can help you..."
             rows="5"
             required
           ></textarea>
-          <div class="invalid-feedback">Please enter your message.</div>
+          <div class="invalid-feedback">Please provide a message.</div>
         </div>
 
         <!-- Submit Button -->
         <div class="text-center">
-          <button type="submit" class="btn btn-dark add-btn mt-3 mb-3">Submit</button>
+          <button type="submit" class="btn btn-dark add-btn mt-3 mb-3">Send Message</button>
         </div>
 
       </form>
     </div>
-  </div>  
+  </div>
 </body>
