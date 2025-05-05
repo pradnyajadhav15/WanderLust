@@ -84,6 +84,8 @@ if (process.env.NODE_ENV !== "production") {
   app.use(express.json());
   app.use(methodoverride("_method"));
   app.use(express.static(path.join(__dirname, "/public")));
+  app.use(express.static('public'));
+
   
   //  Mongoose connection
   mongoose

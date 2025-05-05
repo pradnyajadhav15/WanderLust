@@ -1,99 +1,135 @@
 <style>
+  /* Baby Blue Color Palette */
+  :root {
+    --baby-blue-light: #e6f7ff;
+    --baby-blue-primary: #b3e0ff;
+    --baby-blue-medium: #89cff0;
+    --baby-blue-dark: #5d9cec;
+    --baby-blue-darker: #3a7bd5;
+    --baby-blue-shadow: rgba(137, 207, 240, 0.15);
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Section transitions */
+  section {
+    transition: all 0.4s ease;
+  }
+
+  .section-fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+
+  .section-fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Card animations */
   .card.hover-up {
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     border-radius: 1rem;
   }
 
   .card.hover-up:hover {
     transform: translateY(-8px);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
-    background-color: #e0f7fa;
+    box-shadow: 0 10px 24px var(--baby-blue-shadow);
+    background-color: var(--baby-blue-light);
   }
 
-  .fade-in {
-    opacity: 0;
-    animation: fadeIn 0.8s ease forwards;
+  /* Button animations */
+  .btn-primary, .btn-outline-dark {
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transform: translateY(0);
   }
 
-  .delay-0 { animation-delay: 0s; }
-  .delay-1 { animation-delay: 0.2s; }
-  .delay-2 { animation-delay: 0.4s; }
-  .delay-3 { animation-delay: 0.6s; }
-
-  @keyframes fadeIn {
-    to { opacity: 1; transform: translateY(0); }
-    from { opacity: 0; transform: translateY(20px); }
+  .btn-primary:hover, .btn-outline-dark:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--baby-blue-shadow);
   }
 
+  /* Text animations */
   .text-gradient {
-    background: linear-gradient(to right, #81d4fa, #b3e5fc);
+    background: linear-gradient(to right, var(--baby-blue-medium), var(--baby-blue-primary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    transition: background 0.5s ease;
   }
 
+  /* Page load animation */
+  body {
+    animation: fadeIn 0.8s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* Existing styles with enhanced transitions */
   .section-heading {
     font-size: 2.5rem;
     font-weight: 700;
-    color: #0288d1;
+    color: var(--baby-blue-darker);
+    transition: color 0.3s ease;
   }
 
   .btn-primary {
-    background-color: #81d4fa;
-    border-color: #81d4fa;
-  }
-
-  .btn-outline-dark {
-    border-color: #81d4fa;
-    color: #81d4fa;
-  }
-
-  .btn-outline-dark:hover {
-    background-color: #81d4fa;
+    background-color: var(--baby-blue-medium);
+    border-color: var(--baby-blue-medium);
     color: white;
   }
 
-  .bg-light-pink {
-    background-color: #e0f7fa;
+  .btn-primary:hover {
+    background-color: var(--baby-blue-dark);
+    border-color: var(--baby-blue-dark);
   }
 
-  .bg-dark-pink {
-    background: linear-gradient(135deg, #81d4fa, #0288d1);
-  }
-
-  .text-dark-pink {
-    color: #0288d1;
+  .btn-outline-dark {
+    border-color: var(--baby-blue-medium);
+    color: var(--baby-blue-darker) !important;
   }
 
   .bg-light-blue {
-    background-color: #e0f7fa;
+    background-color: var(--baby-blue-light);
+  }
+
+  .bg-dark-blue {
+    background: linear-gradient(135deg, var(--baby-blue-medium), var(--baby-blue-darker));
+  }
+
+  .text-dark-blue {
+    color: var(--baby-blue-darker) !important;
   }
 
   .bg-gradient-blue {
-    background: linear-gradient(135deg, #81d4fa, #0288d1);
+    background: linear-gradient(135deg, var(--baby-blue-medium), var(--baby-blue-darker));
   }
 
-  .text-blue {
-    color: #0288d1;
+  /* Parallax effect */
+  .parallax-section {
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
-  .card:hover {
-    transform: scale(1.03);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    transition: all 0.3s ease;
+  /* New baby blue specific styles */
+  .bg-light-pink, .bg-dark-pink {
+    background-color: var(--baby-blue-light);
   }
-
-  .card {
-    transition: all 0.3s ease;
+  
+  .text-dark-pink {
+    color: var(--baby-blue-darker);
   }
-
-  .hover-box {
-    transition: all 0.3s ease;
-  }
-
-  .hover-box:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    background-color: #f7f9fc;
+  
+  .bg-dark-pink {
+    background: linear-gradient(135deg, var(--baby-blue-medium), var(--baby-blue-darker));
   }
 </style>
 
@@ -102,9 +138,9 @@
 <body class="bg-white text-dark">
 
   <!-- Hero Section -->
-  <section class="hero-section py-5 bg-light-pink">
+  <section class="hero-section py-5 bg-light-pink section-fade-in">
     <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-5">
-      <div class="hero-text fade-in delay-0">
+      <div class="hero-text">
         <h1 class="display-4 fw-bold text-gradient mb-3">
           Explore, Discover, Experience – WanderLust Awaits
         </h1>
@@ -119,12 +155,12 @@
             <i class="fa-solid fa-eye me-2"></i> Explore Destinations
           </a>
           <button class="btn btn-outline-dark btn-lg px-4" data-bs-toggle="modal" data-bs-target="#hostModal">
-            Become a Host 🏡
+            Become a Host 
           </button>
         </div>
       </div>
-      <div class="hero-image fade-in delay-1 text-center">
-        <img src="https://cdn-icons-png.flaticon.com/512/201/201623.png" alt="Travel" class="img-fluid" style="max-height: 350px;">
+      <div class="hero-image text-center">
+        <img src="https://cdn-icons-png.flaticon.com/512/201/201623.png" alt="Travel" class="img-fluid" style="max-height: 400px;">
       </div>
     </div>
   </section>
@@ -145,16 +181,15 @@
             <li>📍 Set your own pricing, rules & schedule</li>
             <li>🛡️ Get protection with Host Cover & 24/7 support</li>
           </ul>
-
         </div>
       </div>
     </div>
   </div>
 
   <!-- Categories -->
-  <section class="py-5 bg-white">
+  <section class="py-5 bg-white section-fade-in">
     <div class="container text-center">
-      <h2 class="section-heading mb-5 fade-in delay-1">⭐ Top Categories</h2>
+      <h2 class="section-heading mb-5"> Top Categories</h2>
       <div class="row g-4 justify-content-center">
         <% const categories = [
           { icon: "fa-mountain", name: "Mountain Adventures" },
@@ -165,9 +200,9 @@
           { icon: "fa-monument", name: "Historical Wonders" }
         ]; %>
         <% categories.forEach((c, i) => { %>
-          <div class="col-6 col-md-4 col-lg-2 fade-in delay-<%= i %>">
+          <div class="col-6 col-md-4 col-lg-2">
             <div class="card shadow-sm p-4 hover-up text-center">
-              <i class="fa-solid <%= c.icon %> text-dark-pink fs-1 mb-3"></i>
+              <i class="fa-solid <%= c.icon %> text-dark-blue fs-1 mb-3"></i>
               <h5 class="fw-semibold mb-0 text-dark"><%= c.name %></h5>
             </div>
           </div>
@@ -177,9 +212,9 @@
   </section>
 
   <!-- Services -->
-  <section class="py-5 bg-light-pink">
+  <section class="py-5 bg-light-pink section-fade-in">
     <div class="container text-center">
-      <h2 class="section-heading mb-3 fade-in delay-1">Our Offerings</h2>
+      <h2 class="section-heading mb-3">Our Offerings</h2>
       <p class="text-muted mb-5">Dedicated to making your travel seamless and enjoyable, every step of the way.</p>
       <div class="row g-4">
         <% const services = [
@@ -189,11 +224,11 @@
           { title: "24/7 Support", desc: "Our team is always ready to assist you, no matter the time zone.", img: "https://cdn-icons-png.flaticon.com/512/1256/1256650.png" }
         ]; %>
         <% services.forEach((s, i) => { %>
-          <div class="col-md-6 fade-in delay-<%= i %>">
+          <div class="col-md-6">
             <div class="card h-100 shadow hover-up border-0 p-3">
               <div class="card-body d-flex align-items-center">
                 <div class="flex-grow-1 text-start">
-                  <h4 class="card-title fw-bold text-dark-pink"><%= s.title %></h4>
+                  <h4 class="card-title fw-bold text-dark-blue"><%= s.title %></h4>
                   <p class="text-muted mb-0"><%= s.desc %></p>
                 </div>
                 <img src="<%= s.img %>" alt="<%= s.title %>" width="70" class="ms-3">
@@ -206,16 +241,16 @@
   </section>
 
   <!-- CTA -->
-  <section class="py-5 bg-dark-pink text-white">
+  <section class="py-5 bg-dark-pink text-white section-fade-in parallax-section">
     <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-4">
-      <div class="fade-in delay-0">
+      <div>
         <h2 class="fw-bold">Ready to Take Your Business to the Next Level?</h2>
         <p class="text-light">Contact us today and discover how our powerful digital marketing strategies can help you reach more customers and grow your brand.</p>
         <a href="/contactUs" class="btn btn-outline-light btn-lg mt-3 px-4">
           Reach Out <i class="fa-solid fa-arrow-right ms-2"></i>
         </a>
       </div>
-      <div class="fade-in delay-1">
+      <div>
         <img src="https://tse4.mm.bing.net/th?id=OIP.FR0bNEcFkrnxhLaYrOoiiwHaEK&pid=Api&P=0&h=180" 
              class="img-fluid rounded shadow-lg" alt="CTA Image">
       </div>
@@ -223,10 +258,10 @@
   </section>
 
   <!-- Testimonials -->
-  <section class="py-5 bg-white">
-    <div class="container text-center ">
-      <h2 class="section-heading mb-4 fade-in delay-0">What Our Users Say</h2>
-      <p class="text-muted mb-5">Our users’ feedback speaks volumes about their experiences.</p>
+  <section class="py-5 bg-white section-fade-in">
+    <div class="container text-center">
+      <h2 class="section-heading mb-4">What Our Users Say</h2>
+      <p class="text-muted mb-5">Our users' feedback speaks volumes about their experiences.</p>
       <div class="row g-4">
         <% const stories = [
           { icon: "fa-chart-line", name: "Wander Travel Co.", text: "Our bookings surged 50% after listing our properties here." },
@@ -234,11 +269,11 @@
           { icon: "fa-plane", name: "SkyHigh Adventures", text: "We saw a 30% increase in site visitors thanks to WanderLust." }
         ]; %>
         <% stories.forEach((story, i) => { %>
-          <div class="col-md-4 fade-in delay-<%= i %>">
+          <div class="col-md-4">
             <div class="card shadow h-100 p-4 text-start">
               <p class="card-text">"<%= story.text %>"</p>
               <div class="d-flex align-items-center mt-4">
-                <div class="bg-dark-pink text-white rounded-circle p-3 me-3">
+                <div class="bg-dark-blue text-white rounded-circle p-3 me-3">
                   <i class="fa-solid <%= story.icon %>"></i>
                 </div>
                 <h5 class="mb-0"><%= story.name %></h5>
@@ -251,44 +286,110 @@
   </section>
 
   <!-- Comparison -->
-  <section class="py-5 bg-light-blue">
-    <div class="container">
-      <h2 class="text-center mb-5 fw-bold text-blue">Stay. Host. Explore. The WanderLust Way</h2>
-      <div class="row g-4">
-        <div class="col-md-6">
-          <div class="bg-white p-4 rounded shadow-sm h-100 border-info">
-            <h3 class="text-blue mb-3">As a Traveler 🌏✈️</h3>
-            <ul class="list-unstyled">
-              <li class="mb-2">🌄 Diverse stays: apartments, villas, cabins & more</li>
-              <li class="mb-2">💰 Better value than hotels, especially for groups</li>
-              <li class="mb-2">🏙️ Live like a local in unique destinations</li>
-              <li class="mb-2">📆 Flexible short & long-term booking options</li>
-              <li class="mb-2">🏅 Verified reviews & trusted hosts</li>
-              <li class="mb-2">🏞️ Unique experiences and offbeat stays</li>
-              <li class="mb-2">🌍 Book local adventures through our platform</li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="bg-white p-4 rounded shadow-sm h-100 border-info">
-            <h3 class="text-blue mb-3">As a Host 🏡👨‍💻</h3>
-            <ul class="list-unstyled">
-              <li class="mb-2">💸 Earn income by listing your space</li>
-              <li class="mb-2">🌐 Reach a global community of travelers</li>
-              <li class="mb-2">📍 Set your own pricing, rules & schedule</li>
-              <li class="mb-2">🛡️ Get protection with Host Cover & 24/7 support</li>
-              <li class="mb-2">🖥️ Smart dashboard for easy listing management</li>
-              <li class="mb-2">📅 Host whenever it suits you</li>
-              <li class="mb-2">📚 Learn & grow through the host community</li>
-            </ul>
-          </div>
+<section class="py-5 bg-light-blue section-fade-in">
+  <div class="container">
+    
+    <h2 class="text-center mb-5 fw-bold text-dark-blue">Stay. Host. Explore. The WanderLust Way</h2>
+
+    <div class="row g-4">
+      
+      <!-- Traveler Section -->
+      <div class="col-md-6">
+        <div class="bg-white p-4 rounded shadow-sm h-100">
+          <h3 class="fw-bold text-dark-blue mb-3">As a Traveler</h3>
+          <ul class="list-unstyled">
+            <li class="mb-2">🏠 Diverse stays: apartments, villas, cabins & more</li>
+            <li class="mb-2">💰 Better value than hotels, especially for groups</li>
+            <li class="mb-2">🏢 Live like a local in unique destinations</li>
+            <li class="mb-2">📅 Flexible short & long-term booking options</li>
+            <li class="mb-2">✔️ Verified reviews & trusted hosts</li>
+            <li class="mb-2">🌳 Unique experiences and offbeat stays</li>
+            <li class="mb-2">🌍 Book local adventures through our platform</li>
+          </ul>
         </div>
       </div>
-    </div>
-  </section>
 
+      <!-- Host Section -->
+      <div class="col-md-6">
+        <div class="bg-white p-4 rounded shadow-sm h-100">
+          <h3 class="fw-bold text-dark-blue mb-3">As a Host</h3>
+          <ul class="list-unstyled">
+            <li class="mb-2">🪙 Earn income by listing your space</li>
+            <li class="mb-2">👥 Reach a global community of travelers</li>
+            <li class="mb-2">📍 Set your own pricing, rules & schedule</li>
+            <li class="mb-2">🛡️ Get protection with Host Cover & 24/7 support</li>
+            <li class="mb-2">💻 Smart dashboard for easy listing management</li>
+            <li class="mb-2">📆 Host whenever it suits you</li>
+            <li class="mb-2">📚 Learn & grow through the host community</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+  <script>
+    // Intersection Observer for smooth section transitions
+    document.addEventListener('DOMContentLoaded', function() {
+      const sections = document.querySelectorAll('.section-fade-in');
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      });
+
+      sections.forEach(section => {
+        observer.observe(section);
+      });
+
+      // Smooth scroll for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            window.scrollTo({
+              top: target.offsetTop - 80,
+              behavior: 'smooth'
+            });
+          }
+        });
+      });
+    });
+
+    // Floating animation for hero image
+    function floatAnimation() {
+      const heroImage = document.querySelector('.hero-image img');
+      if (heroImage) {
+        let position = 0;
+        let direction = 1;
+        const float = () => {
+          position += 0.05 * direction;
+          if (position > 10) direction = -1;
+          if (position < -10) direction = 1;
+          heroImage.style.transform = `translateY(${position}px)`;
+          requestAnimationFrame(float);
+        };
+        float();
+      }
+    }
+    
+    window.addEventListener('load', floatAnimation);
+  </script>
 
   <script type="text/javascript">window.$crisp=[];window.CRISP_WEBSITE_ID="10343de0-e133-4a8f-98ef-a7a791016b91";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();</script>
+
+
+
+
 
 
 

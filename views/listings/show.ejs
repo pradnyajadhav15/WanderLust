@@ -136,7 +136,7 @@
       <div
         id="map"
         class="rounded-3 shadow-lg"
-        style="height: 500px"
+        style="height: 350px"
         data-lat="<%= individualListings.coordinates[0] %>"
         data-lng="<%= individualListings.coordinates[1] %>"
       ></div>
@@ -147,9 +147,8 @@
   <hr class="mt-5 animated-hr" />
   <div class="mt-5">
     <h2 class="text-center mb-4 review-heading">Leave a Review</h2>
-    <div
-      class="card p-4 border-0 rounded-4 shadow-lg bg-dark text-light review-card"
-    >
+    <div class="card p-4 border-0 rounded-4 shadow-lg custom-review-bg review-card">
+
       <form
         action="/listings/<%= individualListings._id %>/review"
         method="post"
@@ -190,7 +189,7 @@
             ></textarea>
           </div>
           <!-- Submit Button -->
-          <button class="btn btn-outline-light w-100" type="submit">
+          <button class="btn btn-outline-dark w-30 " type="submit">
             Submit Review
           </button>
         </form>
