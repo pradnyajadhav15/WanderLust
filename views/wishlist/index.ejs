@@ -2,9 +2,6 @@
 
 <body>
   <div class="all-listing-page min-vh-100">
-    
-   
-
     <h2 class="mt-3 mb-3 all-listings-heading text-center">Your Wishlist</h2>
 
     <% if(allListings.length > 0) { %>
@@ -12,7 +9,7 @@
         <% allListings.forEach(listing => { %>
           <a href="/listings/<%= listing._id %>" class="listing-link text-decoration-none">
             <div class="card listing-card h-100 relative shadow-lg rounded-4 overflow-hidden">
-              <i class="fa-solid fa-heart heart-icon active" data-id="<%= listing._id %>"></i>
+              <i class="fa-solid fa-heart heart-icon <%= listing.isInWishlist ? 'active' : '' %>" data-id="<%= listing._id %>"></i>
               <div class="card-img-wrapper position-relative">
                 <img src="<%= listing.image.url %>" class="card-img-top img-fluid" alt="listing_image" />
               </div>
@@ -36,6 +33,43 @@
       </div>
     <% } %>
   </div>
+
+  <!-- Wishlist Heart Button Handler -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll(".heart-icon").forEach((icon) => {
+        icon.addEventListener("click", async (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+
+          const listingId = icon.dataset.id;
+
+          try {
+            const response = await fetch("/wishlist/add", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ listingId }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+              // Toggle the active class based on the success response
+              icon.classList.toggle("active");
+              icon.classList.add("clicked");
+
+              // Optional: Add a pulse effect after clicking
+              setTimeout(() => icon.classList.remove("clicked"), 300);
+            }
+          } catch (error) {
+            console.error("Wishlist update failed", error);
+          }
+        });
+      });
+    });
+  </script>
 
   <style>
     /* Card Styles */
@@ -181,6 +215,4 @@
       border-color: #777;
     }
   </style>
-
-
 </body>

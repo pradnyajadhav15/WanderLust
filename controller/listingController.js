@@ -8,7 +8,6 @@ const getWishlistIds = async (user) => {
   return wishlists.map((item) => item.listing.toString());
 };
 
-
 module.exports.allListings = async (req, res) => {
 
     req.session.filteredListings = null;
