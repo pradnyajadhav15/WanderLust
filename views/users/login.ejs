@@ -1,0 +1,36 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="login-main-div d-flex justify-content-center align-items-center vh-100">
+  <div class="form-div">
+    <h1 class="text-center mb-4">Login For WanderLust</h1>
+    <form action="/login" method="post" novalidate class="needs-validation">
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input
+          type="text"
+          name="username"
+          id="username"
+          required
+          class="form-control"
+        />
+        <div class="invalid-feedback">Username is required!</div>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          required
+          class="form-control"
+        />
+        <div class="invalid-feedback">Password is required!</div>
+      </div>
+      <button class="login-btn btn btn-primary w-100" type="submit">Login</button>
+    </form>
+    <div class="signup-line text-center mt-3">
+      New to WanderLust? Join us and start your adventure today!  
+      <span><a href="/signup" class="text-primary">Sign Up</a></span>
+    </div>
+  </div>
+</div>

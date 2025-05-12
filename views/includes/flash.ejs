@@ -1,0 +1,87 @@
+<style>
+  .flash-container {
+    position: fixed;
+    bottom: 30px;
+    right: 20px;
+    z-index: 1055;
+    max-width: 350px;
+    width: 90%;
+    animation: slideUp 0.4s ease;
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .alert {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    padding: 0.9rem 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  .btn-close {
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+  }
+
+  .btn-close:hover {
+    opacity: 1;
+  }
+
+  @media (max-width: 576px) {
+    .flash-container {
+      right: 10px;
+      left: 10px;
+      bottom: 20px;
+      max-width: unset;
+    }
+  }
+</style>
+
+<div class="flash-container" id="flashContainer">
+  <% if(success && success.length){ %>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <%= success %>
+    <button
+      class="btn-close"
+      type="button"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  <% } %>
+
+  <% if(error && error.length){ %>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <%= error %>
+    <button
+      class="btn-close"
+      type="button"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  <% } %>
+</div>
+
+<script>
+  // Auto-dismiss after 4 seconds
+  setTimeout(() => {
+    const flash = document.querySelector('.flash-container .alert');
+    if (flash) {
+      flash.classList.remove('show');
+      setTimeout(() => {
+        flash.remove();
+      }, 300); // Wait for fade-out
+    }
+  }, 4000);
+</script>

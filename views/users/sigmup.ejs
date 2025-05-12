@@ -1,0 +1,47 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="signup-main-div d-flex justify-content-center align-items-center vh-100">
+  <div class="signup-form-div">
+    <h1 class="text-center mb-4">SignUp For WanderLust</h1>
+    <form action="/signup" method="post" novalidate class="needs-validation">
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input
+          type="text"
+          name="username"
+          id="username"
+          class="form-control"
+          required
+        />
+        <div class="invalid-feedback">Username is required!</div>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input
+          type="email"
+          name="email"
+          id="email"
+          required
+          class="form-control"
+        />
+        <div class="invalid-feedback">Email is required!</div>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          required
+          class="form-control"
+        />
+        <div class="invalid-feedback">Password is required!</div>
+      </div>
+      <button class="signup-btn btn btn-primary w-100" type="submit">SignUp</button>
+    </form>
+    <div class="login-line text-center mt-3">
+      Welcome back, traveler! Ready to explore more?  
+      <span><a href="/login" class="text-primary">Login</a></span>
+    </div>
+  </div>
+</div>

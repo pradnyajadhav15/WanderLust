@@ -1,0 +1,62 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+<div class="d-flex justify-content-center align-items-center vh-100 bg-gradient-primary text-white">
+  <div class="text-center p-5 rounded shadow-lg bg-white col-md-8 col-lg-6">
+    <div class="alert alert-danger" role="alert">
+      <h1 class="display-3 fw-bold text-danger">Error</h1>
+      <p class="lead text-dark"><%= message %></p>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <!-- Return to Home Button -->
+      <a href="/listings" class="btn btn-outline-primary btn-lg mt-4 px-5 py-2 mx-2">
+        Return to Home
+      </a>
+
+      <!-- Go Back Button -->
+      <button
+        onclick="window.history.back()"
+        class="btn btn-outline-secondary btn-lg mt-4 px-5 py-2 mx-2"
+      >
+        Go Back
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Optional status code for debugging -->
+<!-- <%= statusCode %> -->
+
+<style>
+  /* Styling for buttons */
+  .btn-outline-primary {
+    border-radius: 50px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  .btn-outline-primary:hover {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .btn-outline-secondary {
+    border-radius: 50px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  .btn-outline-secondary:hover {
+    background-color: #6c757d;
+    color: white;
+  }
+
+  /* Make the error message more prominent */
+  .alert-danger {
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Mobile responsiveness adjustments */
+  @media (max-width: 768px) {
+    .col-md-8 {
+      width: 90%;
+    }
+  }
+</style>

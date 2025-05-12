@@ -1,0 +1,129 @@
+<style>
+  .navbar {
+    background-color: #e0f7fa; /* Soft baby blue */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease-in-out;
+    font-weight: 500;
+    font-size: 1rem;
+    z-index: 999;
+  }
+
+  .navbar-brand {
+    font-size: 1.6rem;
+    color: #0288d1; /* Baby blue */
+    transition: color 0.3s ease;
+  }
+
+  .navbar-brand:hover {
+    color: #01579b; /* Darker baby blue for hover */
+  }
+
+  .nav-link {
+    position: relative;
+    padding: 0.5rem 1rem;
+    transition: color 0.3s ease;
+    color: #0288d1 !important; /* Baby blue text color */
+  }
+
+  .nav-link:hover {
+    color: #01579b !important; /* Darker baby blue for hover */
+  }
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 10%;
+    bottom: 0;
+    width: 80%;
+    height: 2px;
+    background-color: #0288d1; /* Baby blue underline */
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease-out;
+  }
+
+  .nav-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
+
+  .navbar-toggler {
+    border: none;
+  }
+
+  .navbar-toggler:focus {
+    box-shadow: none;
+  }
+
+  @media (max-width: 767px) {
+    .navbar-nav .nav-link {
+      padding-left: 0.8rem;
+    }
+  }
+</style>
+
+<nav class="navbar navbar-expand-md px-4 sticky-top">
+  <div class="container-fluid">
+    <!-- Brand -->
+    <a class="navbar-brand gsap-navbar-icon" href="/">
+      <i class="fa-regular fa-compass" style="color: #0288d1;"></i>
+      <span style="color: #0288d1; font-weight: bold; font-size: 1.8rem; margin-left: 8px;">WanderLust</span>
+    </a>
+    
+
+    <!-- Toggle -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Links -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!-- Left -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item gsap-nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item gsap-nav-item">
+          <a class="nav-link" href="/listings">All Listings</a>
+        </li>
+        <li class="nav-item gsap-nav-item">
+          <a class="nav-link" href="/listings/new">Add New Listing</a>
+        </li>
+        <li class="nav-item gsap-nav-item">
+          <a class="nav-link" href="/contactUs">Contact Us</a>
+        </li>
+        <% if(currUser) { %>
+        <li class="nav-item gsap-nav-item">
+          <a class="nav-link" href="/bookings">
+            <i class="fa-solid fa-calendar-check me-1"></i> My Bookings
+          </a>
+        </li>
+        <% } %>
+      </ul>
+
+      <!-- Right -->
+      <ul class="navbar-nav">
+        <% if(!currUser) {%>
+        <li class="nav-item gsap-nav-item">
+          <a class="nav-link" href="/signup">SignUp</a>
+        </li>
+        <li class="nav-item gsap-nav-item">
+          <a class="nav-link" href="/login">Login</a>
+        </li>
+        <% } else { %>
+        <li class="nav-item gsap-nav-item">
+          <a class="nav-link" href="/logout">LogOut</a>
+        </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</nav>

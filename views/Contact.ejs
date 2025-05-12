@@ -1,0 +1,88 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+<body class="contactUs-form-body container-fluid p-0">
+  <div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8 gsap-form">
+      <h1 class="mb-3 contactUs-heading text-center">Contact Us</h1>
+      <form action="/contactUs" method="post" novalidate class="needs-validation">
+        
+        <!-- Name Field -->
+        <div class="mb-3">
+          <label for="name" class="form-label">Your Full Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            class="form-control"
+           
+            required
+          />
+          <div class="invalid-feedback">Full name is required.</div>
+        </div>
+
+        <!-- Email Field -->
+        <div class="mb-3">
+          <label for="email" class="form-label">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="form-control"
+          
+            required
+          />
+          <div class="invalid-feedback">A valid email is required.</div>
+        </div>
+
+        <!-- Phone Number Field -->
+        <div class="mb-3">
+          <label for="phone" class="form-label">Phone Number</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            class="form-control"
+            
+            pattern="[0-9]{10}"
+            required
+          />
+          <div class="invalid-feedback">Please enter a 10-digit phone number.</div>
+        </div>
+
+        <!-- Subject Field -->
+        <div class="mb-3">
+          <label for="subject" class="form-label">Message Subject</label>
+          <input
+            type="text"
+            id="subject"
+            name="subject"
+            class="form-control"
+          
+            required
+          />
+          <div class="invalid-feedback">Subject cannot be empty.</div>
+        </div>
+
+        <!-- Message Field -->
+        <div class="mb-3">
+          <label for="message" class="form-label">Your Message</label>
+          <textarea
+            id="message"
+            name="message"
+            class="form-control"
+            placeholder="Let us know how we can help you..."
+            rows="5"
+            required
+          ></textarea>
+          <div class="invalid-feedback">Please provide a message.</div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center">
+          <button type="submit" class="btn btn-dark add-btn mt-3 mb-3">Send Message</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</body>

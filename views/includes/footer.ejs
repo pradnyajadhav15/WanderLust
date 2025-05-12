@@ -1,0 +1,196 @@
+<style>
+  /* Footer Styles */
+  footer {
+    background: linear-gradient(135deg, #81d4fa 0%, #4fc3f7 100%);
+    color: #212529;
+    padding: 2rem 0;
+    transition: all 0.4s ease;
+    font-size: 0.95rem;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://www.transparenttextures.com/patterns/soft-circle-scales.png');
+    opacity: 0.05;
+    z-index: -1;
+  }
+
+  .f-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    text-align: center;
+    margin-bottom: 0;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .f-socials, 
+  .f-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .f-brand {
+    text-align: center;
+    font-weight: 500;
+    flex: 1;
+    min-width: 250px;
+  }
+
+  .f-socials a, 
+  .f-links a {
+    color: #212529;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .f-socials a:hover, 
+  .f-links a:hover {
+    color: #0066cc;
+    transform: translateY(-2px);
+  }
+
+  .f-brand p {
+    font-size: 1rem;
+    margin: 0.5rem 0 0;
+    opacity: 0.9;
+  }
+
+  /* Modal Styles */
+  .modal-content {
+    background: #f1f1f1;
+  }
+
+  /* Dark Mode Styles */
+  body.dark-mode footer {
+    background: linear-gradient(135deg, #263238 0%, #37474f 100%);
+    color: #f8f9fa;
+  }
+
+  body.dark-mode .f-socials a, 
+  body.dark-mode .f-links a {
+    color: #f8f9fa;
+  }
+
+  body.dark-mode .f-socials a:hover, 
+  body.dark-mode .f-links a:hover {
+    color: #ffc107;
+  }
+
+  body.dark-mode .back-to-top {
+    background: #ffc107;
+    color: #212529;
+  }
+
+  body.dark-mode .back-to-top:hover {
+    background: #ffab00;
+  }
+
+  @media (max-width: 768px) {
+    .f-info {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+  }
+</style>
+
+<footer id="site-footer">
+  <div class="container">
+    <div class="f-info">
+      <div class="f-socials">
+        <a href="https://www.instagram.com/pradnya_j24/" target="_blank" aria-label="Instagram">
+          <i class="fa-brands fa-instagram"></i> Instagram
+        </a>
+        <a href="https://www.linkedin.com/in/pradnya-jadhav-173199348/" target="_blank" aria-label="LinkedIn">
+          <i class="fa-brands fa-linkedin"></i> LinkedIn
+        </a>
+      </div>
+      <div class="f-brand">
+        <h3 style="margin-bottom: 0.5rem;">WanderLust</h3>
+        <p>© 2023 WanderLust. All rights reserved.</p>
+      </div>
+      <div class="f-links">
+        <!-- Trigger Modal for Privacy -->
+        <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">
+          <i class="fa-solid fa-lock"></i> Privacy
+        </a>
+        <!-- Trigger Modal for Terms -->
+        <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">
+          <i class="fa-solid fa-file-contract"></i> Terms
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<!-- Privacy Modal -->
+<div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="privacyModalLabel">Privacy Policy</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>At WanderLust, we respect your privacy. This Privacy Policy explains how we collect, use, and safeguard your personal information when you use our website.</p>
+        <ul>
+          <li><strong>Information Collection:</strong> We collect personal data when you create an account, book a listing, or interact with our services.</li>
+          <li><strong>Data Usage:</strong> Your information is used to provide you with our services, including bookings, communication, and customer support.</li>
+          <li><strong>Data Protection:</strong> We implement security measures to protect your data, but we cannot guarantee its complete security due to the nature of the internet.</li>
+          <li><strong>Cookies:</strong> We use cookies to enhance your experience and analyze usage patterns.</li>
+          <li><strong>Third-Party Sharing:</strong> We do not sell or share your personal data with third parties unless required by law or to fulfill services (e.g., payment processing).</li>
+        </ul>
+        <p>If you have any questions about your privacy, please contact us at <a href="mailto:wanderlust.support@gmail.com">wanderlust.support@gmail.com</a>.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Terms Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="termsModalLabel">Terms of Service</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>These Terms of Service govern your use of WanderLust's website and services. By accessing or using our platform, you agree to comply with these terms.</p>
+        <ul>
+          <li><strong>Account Registration:</strong> To use certain features, you must create an account. You are responsible for maintaining the confidentiality of your account information.</li>
+          <li><strong>Bookings:</strong> Users may book listings via the platform. Hosts are responsible for ensuring the accuracy of their listings and availability.</li>
+          <li><strong>Payments:</strong> All payments for bookings are processed through secure third-party payment gateways. You agree to pay the fees associated with your bookings.</li>
+          <li><strong>Prohibited Activities:</strong> You may not use the platform for illegal activities or to harm the reputation of WanderLust.</li>
+          <li><strong>Limitation of Liability:</strong> WanderLust is not liable for any damages, losses, or issues arising from your use of the platform.</li>
+          <li><strong>Termination:</strong> We reserve the right to suspend or terminate accounts that violate these terms.</li>
+        </ul>
+        <p>For more details, please contact us at <a href="mailto:wanderlust.support@gmail.com">wanderlust.support@gmail.com</a>.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

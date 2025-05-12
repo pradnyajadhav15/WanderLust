@@ -1,0 +1,95 @@
+<% layout("/layouts/boilerplate.ejs") %>
+<body class="create-new-listing-body container-fluid p-0">
+  <div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8 gsap-form">
+      <h1 class="mb-3 new-listings-heading">Create New Listing</h1>
+      <form
+        action="/listings"
+        method="post"
+        novalidate
+        class="needs-validation"
+        enctype="multipart/form-data"
+      >
+        <!-- Title -->
+        <div class="mb-3 title">
+          <label for="title" class="form-label">Title</label>
+          <input
+            type="text"
+            placeholder="Enter Title"
+            name="listing[title]"
+            class="form-control"
+            required
+          />
+          <div class="invalid-feedback">Title is required!</div>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-3 description">
+          <label for="description" class="form-label">Description</label>
+          <textarea
+            placeholder="Enter a detailed description of your listing"
+            name="listing[description]"
+            class="form-control"
+            required
+          ></textarea>
+          <div class="invalid-feedback">Description is required!</div>
+        </div>
+
+        <!-- Image Upload -->
+        <div class="mb-3 image">
+          <label for="image" class="form-label">Upload Image</label>
+          <input
+            type="file"
+            placeholder="Select an image file"
+            name="listing[image]"
+            class="form-control"
+            required
+          />
+          <div class="invalid-feedback">Image is required!</div>
+        </div>
+
+        <!-- Price and Country -->
+        <div class="row price-country">
+          <div class="mb-3 col-md-4">
+            <label for="price" class="form-label">Price</label>
+            <input
+              type="number"
+              placeholder="Enter price in INR"
+              name="listing[price]"
+              class="form-control"
+              required
+            />
+            <div class="invalid-feedback">Price is required!</div>
+          </div>
+          <div class="mb-3 col-md-8">
+            <label for="country" class="form-label">Country</label>
+            <input
+              type="text"
+              placeholder="Enter country name"
+              name="listing[country]"
+              class="form-control"
+              required
+            />
+            <div class="invalid-feedback">Country is required!</div>
+          </div>
+        </div>
+
+        <!-- Location -->
+        <div class="mb-3 location">
+          <label for="location" class="form-label">Location</label>
+          <input
+            type="text"
+            placeholder="Enter location (e.g., city or town)"
+            name="listing[location]"
+            class="form-control"
+            required
+          />
+          <div class="invalid-feedback">Location is required!</div>
+        </div>
+
+        <!-- Submit Button -->
+        <button class="btn btn-dark add-btn mt-3 mb-3">Add Listing</button>
+      </form>
+    </div>
+  </div>
+</body>
