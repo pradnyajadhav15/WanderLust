@@ -1,6 +1,5 @@
 async function geocodeAddress(address) {
-    // const query = encodeURIComponent(address);
-    // const url = `https://nominatim.openstreetmap.org/search?q=${query}&format=json`;
+   
   const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
     address
   )}`;

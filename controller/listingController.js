@@ -14,12 +14,6 @@ module.exports.allListings = async (req, res) => {
     
   let allListings = await Listing.find({});
 
-  // let wishlistIds = [];
-  // if (req.user) {
-  //   const wishlists = await wishlist.find({ user: req.user._id });
-  //   wishlistIds = wishlists.map((item) => item.listing.toString());
-  // }
-
   const wishlistIds = await getWishlistIds(req.user);
 
   res.locals.page = "listings";

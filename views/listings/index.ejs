@@ -101,6 +101,50 @@
   </main>
 </div>
 
+<script>
+  document.querySelectorAll(".fa-heart").forEach((heart) => {
+    heart.addEventListener("click", async (event) => {
+      event.stopPropagation();
+      event.preventDefault();
+
+      const icon = event.currentTarget; // ✅ get the actual clicked element
+      const listingId = icon.getAttribute("data-id");
+
+      // Optimistic UI toggle
+      icon.classList.toggle("fa-regular");
+      icon.classList.toggle("fa-solid");
+      icon.classList.toggle("active");
+
+      try {
+        const res = await fetch("/wishlist/add", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ listingId }),
+        });
+
+        const data = await res.json();
+
+        // Apply correct style based on server response
+        if (data.action === "added") {
+          icon.classList.add("fa-solid", "active", "text-danger");
+          icon.classList.remove("fa-regular", "text-muted");
+        } else {
+          icon.classList.remove("fa-solid", "active", "text-danger");
+          icon.classList.add("fa-regular", "text-muted");
+        }
+      } catch (err) {
+        console.error("Wishlist update failed", err);
+        // Optional: revert UI toggle if request fails
+        icon.classList.toggle("fa-regular");
+        icon.classList.toggle("fa-solid");
+        icon.classList.toggle("active");
+      }
+    });
+  });
+</script>
+
 <!-- Sticky Footer CSS (in boilerplate or global stylesheet) -->
 <style>
   html, body {

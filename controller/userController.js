@@ -20,7 +20,7 @@ module.exports.signup = async (req, res, next) => {
       if (err) {
         return next(err);
       }
-      req.flash("success", "Welcome to Wanderlust!!");
+      req.flash("success", "Welcome to WanderLust!!");
       res.redirect("/");
     });
   } catch (error) {
@@ -34,7 +34,7 @@ module.exports.loginRender = (req, res) => {
 };
 
 module.exports.login = async (req, res) => {
-  req.flash("success", "Welcome to WanderNest!!  You are logged in!");
+  req.flash("success", "Welcome to WanderLust!!  You are logged in!");
   //user login thase pachi apde aene redirectUrl par pacha redirect karsu means je route par thi te login par aya ta tya j pacha after login aene redirect karvama avse burt haji ama problem che k if user firect login btn click karine login page ma ave without any route to req.session.redirectUrl aa valur undefine hase so aene as it is "/listings" par redirect kari devanu;
 
   // console.log(req.session.redirectUrl); // it's give undefine bcs passport clear session after user login so we use middleware to store this value in res.locals.redirectUrl .
