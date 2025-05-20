@@ -9,7 +9,7 @@ WanderLust allows travelers to explore amazing destinations and discover the per
 
 ## 🔗 Live Demo
 
-[👉 View WanderLust Live](https://your-live-demo-link.com)
+[👉 View WanderLust Live](https://wanderlust-2-mf26.onrender.com)
 
 ---
 
