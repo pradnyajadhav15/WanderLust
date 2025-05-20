@@ -4,10 +4,15 @@
   color: #212529;
 }
 
+.custom-review-bg {
+  background-color: #b3e0ff;
+}
+
+
 .custom-review-bg .form-control,
 .custom-review-bg textarea {
   background-color: #e1f5fe;
-  color: #212529;
+
   border: 1px solid #90caf9;
 }
 
@@ -35,25 +40,7 @@
   box-shadow: 0 4px 12px rgba(1, 87, 155, 0.2);
 }
 
-
-
-
 </style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <% layout("/layouts/boilerplate.ejs") %>
@@ -142,7 +129,7 @@
       ></div>
     </div>
 
-<!-- Leave a Review Section -->
+Leave a Review Section
 <% if(currUser){ %>
   <hr class="mt-5 animated-hr" />
   <div class="mt-5">
@@ -154,6 +141,21 @@
         method="post"
         class="needs-validation"
       >
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

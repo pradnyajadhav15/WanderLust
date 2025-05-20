@@ -1,16 +1,14 @@
 <% layout("/layouts/boilerplate.ejs") %>
 
 <div class="wrapper d-flex flex-column min-vh-100">
-
   <!-- Top Navbar -->
   <nav class="navbar fixed-top shadow-sm px-4 py-3 bg-white d-flex justify-content-between align-items-center">
+    
     <a class="navbar-brand gsap-navbar-icon" href="/">
       <i class="fa-regular fa-compass" style="color: #0288d1;"></i>
-      <span style="color: #0288d1; font-weight: bold; font-size: 1.8rem; margin-left: 8px;">
-        WanderLust
-      </span>
+      <span style="color: #0288d1; font-weight: bold; font-size: 1.8rem; margin-left: 8px;">WanderLust</span>
     </a>
-
+    
     <div>
       <a href="/wishlist/" class="btn btn-sm btn-outline-danger">
         <i class="fa-solid fa-heart"></i> Wishlist
@@ -19,10 +17,8 @@
   </nav>
 
   <!-- Main Content -->
-  <main class="flex-grow-1">
-    <!-- Adjust padding-top to match your navbar height -->
-    <div class="container" style="padding-top: 40px;">
-
+  <main class="flex-grow-1 pt-5"> <!-- Adjusted padding-top for fixed navbar -->
+    <div class="container">
       <!-- Search & Sorting -->
       <div class="p-4 rounded shadow-sm bg-light mb-4">
         <form action="/listings/indivisual/search" method="GET">
@@ -59,39 +55,43 @@
       <div class="search-container py-3 px-4 rounded shadow-sm bg-light mb-3">
         <% if (allListings.length > 0) { %>
           <h2 class="mb-4 text-center">✨ Explore Listings</h2>
-          <div class="row row-cols-xl-4 row-cols-lg-3 row-cols-md-2 row-cols-1 g-4">
+          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
             <% allListings.forEach(listing => { %>
-              <a href="/listings/<%= listing.id %>" class="listing-link text-decoration-none">
-                <div class="card listing-card h-100 border-0 shadow-sm rounded-4 overflow-hidden position-relative">
-                  <i
-                    class="fa-heart position-absolute top-0 end-0 m-3 fs-4
-                      <%= wishlistIds.includes(listing._id.toString())
-                        ? 'fa-solid active text-danger'
-                        : 'fa-regular text-muted' %>"
-                    data-id="<%= listing._id %>"
-                  ></i>
-                  <img
-                    src="<%= listing.image.url %>"
-                    alt="Image of <%= listing.title %>"
-                    class="card-img-top"
-                    style="height: 200px; object-fit: cover;"
-                  />
-                  <div class="card-body text-center">
-                    <h5 class="card-title fw-bold mb-2"><%= listing.title %></h5>
-                    <p class="text-muted mb-1">
-                      📍 <%= listing.location %>, <%= listing.country %>
-                    </p>
-                    <p class="text-primary fw-semibold">
-                      &#8377; <%= listing.price.toLocaleString("en-IN") %> / night
-                    </p>
+              <div class="col">
+                <a href="/listings/<%= listing.id %>" class="text-decoration-none">
+                  <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden position-relative listing-card">
+                    <i
+                      class="fa-heart position-absolute top-0 end-0 m-3 fs-4
+                        <%= wishlistIds.includes(listing._id.toString()) 
+                          ? 'fa-solid text-danger' 
+                          : 'fa-regular text-muted' %>"
+                      data-id="<%= listing._id %>"
+                      role="button"
+                    ></i>
+                    <img
+                      src="<%= listing.image.url %>"
+                      alt="<%= listing.title %>"
+                      class="card-img-top"
+                      style="height: 200px; object-fit: cover;"
+                      loading="lazy"
+                    />
+                    <div class="card-body text-center">
+                      <h5 class="card-title fw-bold mb-2"><%= listing.title %></h5>
+                      <p class="text-muted mb-1">
+                        📍 <%= listing.location %>, <%= listing.country %>
+                      </p>
+                      <p class="text-primary fw-semibold">
+                        &#8377; <%= listing.price.toLocaleString("en-IN") %> / night
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </a>
+                </a>
+              </div>
             <% }) %>
           </div>
         <% } else { %>
-          <div class="text-center mt-5">
-            <h4 class="mb-3 text-muted">Oops! No listings found!!</h4>
+          <div class="text-center mt-5 py-5">
+            <h4 class="mb-3 text-muted">Oops! No listings found!</h4>
             <p class="mb-4">Seems like your dream stay is playing hide and seek! 🏡🔍</p>
             <a href="/listings" class="btn btn-primary rounded-pill px-4 py-2">Get All Listings</a>
           </div>
@@ -107,56 +107,29 @@
       event.stopPropagation();
       event.preventDefault();
 
-      const icon = event.currentTarget; // ✅ get the actual clicked element
-      const listingId = icon.getAttribute("data-id");
+      heart.classList.toggle("fa-regular");
+      heart.classList.toggle("fa-solid");
+      heart.classList.toggle("active");
 
-      // Optimistic UI toggle
-      icon.classList.toggle("fa-regular");
-      icon.classList.toggle("fa-solid");
-      icon.classList.toggle("active");
+      const listingId = heart.getAttribute("data-id");
 
-      try {
-        const res = await fetch("/wishlist/add", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ listingId }),
-        });
+      const res = await fetch("/wishlist/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ listingId }),
+      });
 
-        const data = await res.json();
+      const data = await res.json();
 
-        // Apply correct style based on server response
-        if (data.action === "added") {
-          icon.classList.add("fa-solid", "active", "text-danger");
-          icon.classList.remove("fa-regular", "text-muted");
-        } else {
-          icon.classList.remove("fa-solid", "active", "text-danger");
-          icon.classList.add("fa-regular", "text-muted");
-        }
-      } catch (err) {
-        console.error("Wishlist update failed", err);
-        // Optional: revert UI toggle if request fails
-        icon.classList.toggle("fa-regular");
-        icon.classList.toggle("fa-solid");
-        icon.classList.toggle("active");
+      if (data.action === "added") {
+        this.classList.add("fa-solid", "active");
+        this.classList.remove("fa-regular");
+      } else {
+        this.classList.remove("fa-solid", "active");
+        this.classList.add("fa-regular");
       }
     });
   });
 </script>
-
-<!-- Sticky Footer CSS (in boilerplate or global stylesheet) -->
-<style>
-  html, body {
-    height: 100%;
-    margin: 0;
-  }
-  .wrapper {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-  main {
-    flex: 1;
-  }
-</style>
